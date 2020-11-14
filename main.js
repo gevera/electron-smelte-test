@@ -15,10 +15,11 @@ function isDev() {
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        minWidth: 800,
-        width: 1024,
-        minHeight: 600,
-        height: 768,
+        minWidth: 1024,
+        minHeight: 768,
+        resizable: true,
+        width: 1200,
+        height: 800,
         webPreferences: {
             nodeIntegration: true
         },
@@ -29,6 +30,7 @@ function createWindow() {
         show: false
     });
 
+    
     // This block of code is intended for development purpose only.
     // Delete this entire block of code when you are ready to package the application.
     if (isDev()) {
@@ -39,11 +41,12 @@ function createWindow() {
     
     // Uncomment the following line of code when app is ready to be packaged.
     // loadURL(mainWindow);
-
+    
     // Open the DevTools and also disable Electron Security Warning.
     // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
     // mainWindow.webContents.openDevTools();
     
+    // mainWindow.maximize();
     mainWindow.setMenuBarVisibility(false); // Disables menu bar
 
     // Emitted when the window is closed.

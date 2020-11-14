@@ -37,6 +37,7 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,
@@ -46,34 +47,7 @@ export default {
 				css.write('public/build/bundle.css');
 			}
 		}),
-		smelte({
-			purge: production,
-			output: "public/global.css", // it defaults to static/global.css which is probably what you expect in Sapper
-			postcss: [], // Your PostCSS plugins
-			whitelist: [], // Array of classnames whitelisted from purging
-			whitelistPatterns: [], // Same as above, but list of regexes
-			tailwind: {
-			  theme: {
-				extend: {
-				  spacing: {
-					72: "18rem",
-					84: "21rem",
-					96: "24rem"
-				  }
-				}
-			  }, // Extend Tailwind theme
-			  colors: {
-				primary: "#b027b0",
-				secondary: "#009688",
-				error: "#f44336",
-				success: "#4caf50",
-				alert: "#ff9800",
-				blue: "#2196f3",
-				dark: "#212121"
-			  }, // Object of colors to generate a palette from, and then all the utility classes
-			  darkMode: true,
-			}, // Any other props will be applied on top of default Smelte tailwind.config.js
-		  }),
+		
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -96,7 +70,36 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser(),
+		smelte({
+			purge: production,
+			output: "public/global.css", // it defaults to static/global.css which is probably what you expect in Sapper
+			postcss: [], // Your PostCSS plugins
+			whitelist: [], // Array of classnames whitelisted from purging
+			whitelistPatterns: [], // Same as above, but list of regexes
+			tailwind: {
+			  theme: {
+				extend: {
+				  spacing: {
+					72: "18rem",
+					84: "21rem",
+					96: "24rem"
+				  }
+				}
+			  }, // Extend Tailwind theme
+			  colors: {
+				main: "#D53267",
+				primary: "#D53267",
+				secondary: "#37868D",
+				error: "#f44336",
+				success: "#4caf50",
+				alert: "#ff9800",
+				blue: "#2196f3",
+				dark: "#212121"
+			  }, // Object of colors to generate a palette from, and then all the utility classes
+			  darkMode: true,
+			}, // Any other props will be applied on top of default Smelte tailwind.config.js
+		  })
 	],
 	watch: {
 		clearScreen: false
