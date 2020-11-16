@@ -12,7 +12,7 @@
     <h5 class="text-dark-500"># 43534435</h5>
     <h5 class="text-primary-500">На модерации</h5>
   </div>
-  <div>
+  <div class="">
     <table class="table-fixed w-full">
       <tbody class="text-md">
         <tr class="bg-gray-100">

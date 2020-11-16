@@ -6,6 +6,8 @@
   import OrderTable from '../customer/OrderTable.svelte';
   import OrderReview from '../customer/OrderReview.svelte';
   import NewRegion from '../admin/NewRegion.svelte';
+  import RegionReview from '../admin/RegionReview.svelte';
+  import EditRegion from '../admin/EditRegion.svelte';
 
 </script>
 
@@ -22,6 +24,6 @@
 <main class="w-full h-full p-6 back flex flex-col justify-between">
   <Header />
   <div class="rounded-md shadow-md bg-white size flex-1 mt-6">
-     <NewRegion />
+     <EditRegion />
   </div>
 </main>
