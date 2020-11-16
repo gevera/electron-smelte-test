@@ -34,12 +34,10 @@
     height: 746px;
     width: 396px;
     background: #ffffff;
-    border-radius: 6px;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
   }
 </style>
 
-<div class="register p-4 pt-2">
+<div class="register p-4 pt-2 rounded-md shadow-md">
   <h6 class="text-center">Регистрация</h6>
   <Select bind:value={value3} outlined autocomplete label="Регион" {items} />
   <TextField label="Имя" outlined color="secondary" />
