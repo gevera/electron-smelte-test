@@ -1,16 +1,4 @@
-<script>
-</script>
-
-<style>
-
-</style>
-
 <div class="">
-  <div class="flex items-center justify-between p-6">
-    <h5 class="text-dark-500"># 43534435</h5>
-    <h5 class="text-primary-500">На модерации</h5>
-  </div>
-  <div class="">
     <table class="table-fixed w-full">
       <tbody class="text-md">
         <tr class="bg-gray-100">
@@ -25,15 +13,14 @@
         </tr>
         <tr class="bg-gray-100">
           <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Адрес</th>
-          <td class="w-1/2 px-6 py-4  text-dark-500">
-            Ufa city, raz dva ulitza
-          </td>
+          <td class="w-1/2 px-6 py-4  text-dark-500">123 Some street. Ufa</td>
         </tr>
         <tr>
           <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Регион</th>
-          <td class="w-1/2 px-6 py-4  text-dark-500">Республика Башкортостан</td>
+          <td class="w-1/2 px-6 py-4  text-dark-500">
+            Республика Башкортостан
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>

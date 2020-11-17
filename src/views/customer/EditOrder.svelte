@@ -1,5 +1,6 @@
 <script>
   import { TextField, Button } from "smelte";
+import SaveClose from "../../components/common/SaveClose.svelte";
 </script>
 
 <div class="w-full h-full p-8 flex flex-col justify-between">
@@ -11,17 +12,5 @@
     <TextField label="Регион" outlined color="secondary" prepend="public"/>
     <TextField label="Город" outlined color="secondary" prepend="map"/>
   </div>
-  <div class="flex justify-end">
-    <div class="flex items-center">
-      <Button
-        outlined
-        light
-        color="dark"
-        class="mx-2"
-        add="shadow hover:shadow-md">
-        Отмена
-      </Button>
-      <Button class="ml-2" add="shadow-none hover:shadow-md">Сохранить</Button>
-    </div>
-  </div>
+  <SaveClose />
 </div>
