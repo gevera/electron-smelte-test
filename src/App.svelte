@@ -8,5 +8,6 @@
 </script>
 
 <Canvas>
-   <WorkingArea />
+   <!-- <WorkingArea /> -->
+   <SimpleLogin />
 </Canvas>

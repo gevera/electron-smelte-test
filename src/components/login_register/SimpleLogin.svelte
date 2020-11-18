@@ -1,5 +1,14 @@
 <script>
   import { TextField, Button } from "smelte";
+  import { login } from "../../utils/helpres/login";
+  let data = {
+    username: "",
+    password: "",
+  };
+
+  const loginAttempt = () => {
+    login(data);
+  };
 </script>
 
 <style>
@@ -60,13 +69,22 @@
   <div class="side">
     <div class="right">
       <h4 class="text-center mb-1 text-secondary-500">Вход</h4>
-      <TextField label="Логин" outlined color="secondary" />
-      <TextField label="Пароль" outlined color="secondary" />
+      <TextField
+        label="Логин"
+        outlined
+        color="secondary"
+        bind:value={data.username} />
+      <TextField
+        label="Пароль"
+        type="password"
+        outlined
+        color="secondary"
+        bind:value={data.password} />
       <p class="text-sm">
         Нет аккаунта? Создайте его
         <a href="/" class="text-primary-500 underline">здесь</a>
       </p>
-      <Button block color="primary">Войти</Button>
+      <Button block color="primary" on:click={loginAttempt}>Войти</Button>
     </div>
   </div>
 </div>
