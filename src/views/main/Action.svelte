@@ -2,9 +2,12 @@
   import Header from "./Header.svelte";
   import EditOrder from '../customer/EditOrder.svelte';
   import NewOrder from '../customer/NewOrder.svelte';
+  import NewOrderContract from '../contractor/NewOrder.svelte';
+  import NewOrderRepresent from '../representative/NewOrder.svelte';
   import EditAccount from '../customer/EditAccount.svelte';
   import OrderTable from '../customer/OrderTable.svelte';
   import OrderReview from '../customer/OrderReview.svelte';
+  import OrderReviewContract from '../contractor/OrderReview.svelte';
   import NewRegion from '../admin/NewRegion.svelte';
   import RegionReview from '../admin/RegionReview.svelte';
   import EditRegion from '../admin/EditRegion.svelte';
@@ -15,12 +18,20 @@
   import NewContractor from '../representative/NewContractor.svelte';
   import ContractorTableRepresent from '../representative/ContractorTable.svelte';
   import ContractorReviewRepresent from '../representative/ContractorReview.svelte';
-  import NewOrderRepresent from '../representative/NewOrder.svelte';
   import OrderReviewRepresent from '../representative/OrderReview.svelte';
   import OrderReport from '../representative/OrderReport.svelte';
   import EditReport from '../representative/EditReport.svelte';
   import EditAccountRepresent from '../representative/EditAccount.svelte';
   import AllOrders from '../representative/AllOrders.svelte';
+  import TakeOrder from '../contractor/TakeOrder.svelte';
+  import OrdersInProgress from '../contractor/OrdersInProgress.svelte';
+  import OrdersInModeration from '../contractor/OrdersInModeration.svelte';
+  import NewReport from '../contractor/NewReport.svelte';
+  import OrderPreview from '../contractor/OrderPreview.svelte';
+  import EditReportContract from '../contractor/EditReport.svelte';
+  import OrdersCompleted from '../contractor/OrdersCompleted.svelte';
+  import EditAccountContract from '../contractor/EditAccount.svelte';
+  import EditOrderContract from '../contractor/EditOrder.svelte';
 
 </script>
 
@@ -37,6 +48,6 @@
 <main class="w-full h-full p-6 back flex flex-col justify-between">
   <Header />
   <div class="rounded-md shadow-md bg-white size flex-1 mt-6">
-     <AllOrders />
+     <EditOrderContract />
   </div>
 </main>

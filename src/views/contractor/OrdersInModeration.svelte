@@ -1,16 +1,16 @@
 <script>
-  import { DataTable, Select, TextField } from "smelte";
+  import { DataTable, Select } from "smelte";
   let open = true;
   let value1 = "";
 
   const items = [
     {
       value: 1,
-      text: "Prosmotr",
+      text: "Ufa",
     },
     {
       value: 2,
-      text: "Redactirovanie",
+      text: "Sterlitamak",
     },
   ];
   let columns = [
@@ -19,7 +19,7 @@
       label: "Имя",
       sortable: true,
       editable: false,
-      class: "text-base",
+      class: "text-base pl-6",
     },
     {
       field: "telephone",
@@ -40,14 +40,15 @@
       label: "-",
       editable: false,
       sortable: false,
+      class: "pr-6",
       value: (v) => `
-                      <Menu bind:open {items} bind:value={selected}>
-                          <div slot="activator">
-                          <Button text light flat icon="more_vert on:click={() => console.log('Clicked' + v)}">
-                              <span class="material-icons text-primary-500">more_vert</span>
-                          </Button>
-                      </div>
-                      </Menu>`,
+                        <Menu bind:open {items} bind:value={selected}>
+                            <div slot="activator">
+                            <Button text light flat icon="more_vert on:click={() => console.log('Clicked' + v)}">
+                                <span class="material-icons text-dark-500">more_vert</span>
+                            </Button>
+                        </div>
+                        </Menu>`,
     },
   ];
   let data = [
@@ -63,18 +64,15 @@
 </script>
 
 <div class="w-full h-full py-6">
-  <div class="flex px-6 items-center justify-between">
-    <p class="text-dark-500 mr-2">Сортировка</p>
+  <div class="flex px-6 items-center">
+    <p class="text-dark-500 mr-2">Город</p>
     <Select
       class="w-auto  p-2 border-none"
       outlined
       {items}
       on:change={(v) => (value1 = v.detail)} />
   </div>
-  <div class="px-6">
-    <TextField outlined color="secondary" label="Поиск заявки" />
-  </div>
-  <div class="mt-4">
+  <div class="">
     <DataTable class="w-full text-base" {columns} {data} />
   </div>
 </div>
