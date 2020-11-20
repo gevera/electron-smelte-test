@@ -1,13 +1,18 @@
 <script>
   import { TextField, Button } from "smelte";
-  import { login } from "../../utils/helpres/login";
+  import { login } from "../../utils/helpers/login";
+
   let data = {
     username: "",
     password: "",
   };
 
-  const loginAttempt = () => {
-    login(data);
+  const loginAttempt = async () => {
+    const { success } = await login(data);
+    if (success) {
+      data.username = "";
+      data.password = "";
+    }
   };
 </script>
 

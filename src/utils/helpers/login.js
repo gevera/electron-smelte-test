@@ -1,12 +1,15 @@
 import { get } from 'svelte/store';
 import { tempConfig } from '../stores/tempConfigs';
+import { token } from '../stores/token';
+import { user } from '../stores/user';
+import { getMe } from './me';
 
 const URL = get(tempConfig);
 
 export const login = async (data) => {
     const { username, password } = data;
     console.log(username, password);
-    const response = await fetch(`${URL.server_URL}/api/users/login/`, {
+    const response = await fetch(`${URL.server_URL}${URL.login}`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -15,10 +18,13 @@ export const login = async (data) => {
     });
     if (response.ok) {
         const data = await response.json();
-
-        console.log(data);
-    } else {
-        console.log({ success: false, message: 'Failed to login' })
+        const { token: tokenRecieved } = data;
+        token.set(tokenRecieved);
+        const responseMe = await getMe(tokenRecieved);
+        if (responseMe.success) {
+            user.set(responseMe.data[0]);
+            return { success: true }
+        }
     }
-    return;
+    return { success: false }
 }
