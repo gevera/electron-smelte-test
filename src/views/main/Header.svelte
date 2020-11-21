@@ -7,6 +7,14 @@
 
   $: region = $regions.filter((r) => r.id == $user.user.region)[0].name;
 
+  const openAccountSettings = () => {
+    if ($user.user.groups == 2 || $user.user.groups == 3) {
+       $activeHeader = 'Настройка аккаунта';
+    } else if ($user.user.groups == 4) {
+      $activeHeader = 'Редактирование аккаунта';
+    }
+  }
+
 </script>
 
 <div class="flex items-center justify-between w-full p-2">
@@ -15,7 +23,7 @@
   </div>
   <div class="flex justify-end">
     <Button text flat color="dark" icon="notifications" />
-    <Button text flat color="dark" icon="settings" />
+    <Button text flat color="dark" icon="settings" on:click={openAccountSettings}/>
     <div class="border-l-2 pl-4 flex items-center">
       <div class="mr-2">
         <h6 class="text-drk-500 font-light mb-1">

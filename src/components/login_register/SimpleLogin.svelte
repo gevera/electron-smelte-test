@@ -1,6 +1,7 @@
 <script>
   import { TextField, Button } from "smelte";
   import { login } from "../../utils/helpers/login";
+  import { viewStates } from "../../utils/stores/viewStates";
 
   let data = {
     username: "",
@@ -12,7 +13,12 @@
     if (success) {
       data.username = "";
       data.password = "";
+      $viewStates = "active";
     }
+  };
+
+  const gotoRegister = () => {
+    $viewStates = "register";
   };
 </script>
 
@@ -87,7 +93,9 @@
         bind:value={data.password} />
       <p class="text-sm">
         Нет аккаунта? Создайте его
-        <a href="/" class="text-primary-500 underline">здесь</a>
+        <span
+          class="text-primary-500 underline cursor-pointer"
+          on:click={gotoRegister}>здесь</span>
       </p>
       <Button block color="primary" on:click={loginAttempt}>Войти</Button>
     </div>
