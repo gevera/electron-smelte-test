@@ -84,7 +84,8 @@
         label="Логин"
         outlined
         color="secondary"
-        bind:value={data.username} />
+        bind:value={data.username}
+        />
       <TextField
         label="Пароль"
         type="password"

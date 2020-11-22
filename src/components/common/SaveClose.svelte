@@ -1,5 +1,7 @@
 <script>
   import { Button } from "smelte";
+  export let positive;
+  export let negative;
 </script>
 
 <div class="flex justify-end px-6">
@@ -9,9 +11,12 @@
       light
       color="dark"
       class="mx-2"
-      add="shadow hover:shadow-md">
+      add="shadow hover:shadow-md"
+      on:click={negative}>
       Отмена
     </Button>
-    <Button class="ml-2" add="shadow-none hover:shadow-md">Сохранить</Button>
+    <Button class="ml-2" add="shadow-none hover:shadow-md" on:click={positive}>
+      Сохранить
+    </Button>
   </div>
 </div>

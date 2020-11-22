@@ -7,11 +7,12 @@
   import WorkingArea from "./views/main/WorkingArea.svelte";
   import { user } from "./utils/stores/user";
   import { onMount } from "svelte";
-  import { getRegions } from "./utils/helpers/region";
+  import { getRegions, getCities } from "./utils/helpers/region";
   import { viewStates } from "./utils/stores/viewStates";
 
   onMount(async () => {
-    getRegions();
+    await getRegions();
+    await getCities();
   });
 </script>
 

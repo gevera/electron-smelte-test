@@ -1,107 +1,118 @@
 <script>
-    import {Switch, DataTable, Button, Menu } from 'smelte';
-    let data =[];
-    let loading = false;
-    // async function getData() {
-    //     if (typeof window === "undefined") return;
-    //     loading = true;
-    //     const res = await fetch("./data.json");
-    //     const body = await res.json();
+  import { Switch, DataTable, Button, Menu, List } from "smelte";
+  import { tempConfig } from "../../utils/stores/tempConfigs";
+  import { cities } from "../../utils/stores/regions";
+  import Table from "../../components/common/Table.svelte";
+  import Submenu from "../../components/common/Submenu.svelte";
 
-    //     data = body;
-    // }
+  let dataFetched = [];
+  let loading = false;
 
-    // getData();
-    
-    const sampleData = [
-        { 
-            id: 1,
-            name: 'Vasya Pupkin',
-            telephone: '+85967495764',
-            address: 'some street 456'
-        },
-        {   id: 2,
-            name: 'Prokofieva Naliya',
-            telephone: '+333555666',
-            address: 'Long ass address 45'
-        }
-    ]
+  async function getData() {
+    if (typeof window === "undefined") return;
+    loading = true;
+    const res = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.orderList}`
+    );
+    if (res.ok) {
+      const body = await res.json();
+      dataFetched = body;
+      console.log(dataFetched);
+      loading = false;
+    }
+  }
 
-    data = sampleData;
+  getData();
 
-    let open = false;
-    let selected = "";
+  $: data = dataFetched.map((d) => ({
+    ...d,
+    city: [...$cities].filter((c) => c.id == d.city)[0].name,
+  }));
 
-    const items = [
-        {
-            value: 1,
-            text: 'Prosmotr'
-        },
-        {
-            value: 2,
-            text: 'Redactirovanie'
-        }
-    ]
+  let open = false;
+  let selected = "";
 
+  const toggleMenu = () => (open = !open);
+
+
+  $: console.log(data);
+  $: console.log(selected);
 </script>
-<div class="flex flex-col justify-between py-6">
-    <div class="px-6 flex items-center mb-4">
-        <p class="mr-4 text-dark-500">Исполненные</p>
-        <div class="pt-1">
-            <Switch />
-        </div>
+
+<div class="py-6">
+  <div class="px-6 flex items-center mb-4">
+    <p class="mr-4 text-dark-500">Исполненные</p>
+    <div class="pt-1">
+      <Switch />
     </div>
-    <div>
-        <DataTable
-        {data}
-        {loading}
-        class="w-full h-full"
-        on:update={
-            ({detail}) => {
-                const { column, item, value} = detail;
-                const index = data.findIndex(i => i.id === item.id);
-                data[index][column.field] = value;
-            }
-        }
-        columns={
-            [
-                {
-                    label: 'Имя',
-                    field: 'name',
-                    class:"",
-                    editable: false
-                },
-                {
-                    label: 'Телефон',
-                    class:"md:w-18",
-                    add:"md:w-30",
-                    field: 'telephone',
-                    editable: false
-                },
-                {
-                    label: 'Адрес',
-                    add: 'text-left',
-                    field: 'address',
-                    editable: false,
-                    iconAfter: true
-                },
-                {
-                    label: '-',
-                    class: 'md:w-8',
-                    sortable: false,
-                    editable: false,
-                    value: () => `
+  </div>
+  <ul>
+    {#each data as item, i (item.id)}
+      <li
+        class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
+        class:bg-gray-100={i % 2}>
+        <div class="w-3/12 border-r pl-6">{item.customer}</div>
+        <div class="w-3/12 border-r pl-4">{item.customer_number}</div>
+        <div class="w-5/12 border-r pl-4">
+          г.
+          {item.city}
+          {item.customer_address}
+        </div>
+        <div class="w-1/12 px-6">
+           <Submenu />
+        </div>
+      </li>
+    {/each}
+  </ul>
+  <div />
+  <!-- <List items={data} dense>
+    <li slot="item" let:item>
+      <div class="cursor-pointer p-2 flex hover:bg-gray-200 items-center">
+        <div class="w-3/12 border-r pl-6">{item.customer}</div>
+        <div class="w-3/12 border-r pl-4">{item.customer_number}</div>
+        <div class="w-5/12 border-r pl-4">
+          г.
+          {item.city}
+          {item.customer_address}
+        </div>
+        <div class="w-1/12 px-3">
+          <Menu
+            bind:open
+            items={[{ value: 1, text: 'Prosmotr' }, { value: 2, text: 'Redaktirovanie' }]}
+            bind:value={selected}>
+            <div slot="activator">
+              <Button
+                text
+                light
+                flat
+                icon="more_vert"
+                on:click={() => (open = !open)} />
+            </div>
+          </Menu>
+        </div>
+      </div>
+    </li>
+  </List> -->
+  <!-- <DataTable
+      {data}
+      {loading}
+      class="w-full h-full"
+      on:update={({ detail }) => {
+        const { column, item, value } = detail;
+        const index = data.findIndex((i) => i.id === item.id);
+        data[index][column.field] = value;
+      }}
+      columns={[
+          { label: 'Имя', field: 'customer', class: '', editable: false },
+          { label: 'Телефон', class: 'md:w-18 p-2', add: 'md:w-30 p-2', field: 'customer_number', editable: false },
+          { label: 'Город', class: 'md:w-18', add: 'md:w-30 p-2', field: 'city', editable: false },
+          { label: 'Адрес', add: 'text-left p-2', field: 'customer_address', editable: false, iconAfter: true },
+          { label: '-', class: 'md:w-8', sortable: false, editable: false, value: () => `
                                 <Menu bind:open {items} bind:value={selected}>
                                     <div slot="activator">
                                   <Button text light flat icon="more_vert on:click={() => open = !open}">
                                       <span class="material-icons text-primary-500">more_vert</span>
                                   </Button>
                                 </div>
-                                </Menu>`
-                },
-
-            ]
-        }
-        />
-    </div>
+                                </Menu>` }]} /> -->
 </div>
