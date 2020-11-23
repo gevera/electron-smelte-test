@@ -1,5 +1,8 @@
 <script>
   import { Menu, Button } from "smelte";
+  import { activeHeader } from "../../utils/stores/activeHeader";
+  import { orderID } from "../../utils/stores/order";
+  export let id;
   let open = false,
     selected = "";
   const itemsData = [
@@ -12,6 +15,15 @@
       text: "Редактирование",
     },
   ];
+
+  $: if (selected == 1) {
+    $activeHeader = 'Просмотр заявки';
+    $orderID = id;
+  } else if (selected == 2) {
+    $activeHeader = 'Редактирование заявки';
+    $orderID = id;
+  }
+
 </script>
 
 <Menu bind:open items={itemsData} bind:value={selected}>

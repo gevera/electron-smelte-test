@@ -5,7 +5,7 @@
   import NewPassword from "./components/login_register/NewPassword.svelte";
   import Register from "./components/login_register/Register.svelte";
   import WorkingArea from "./views/main/WorkingArea.svelte";
-  import { user } from "./utils/stores/user";
+  import { token } from "./utils/stores/token";
   import { onMount } from "svelte";
   import { getRegions, getCities } from "./utils/helpers/region";
   import { viewStates } from "./utils/stores/viewStates";
@@ -13,6 +13,11 @@
   onMount(async () => {
     await getRegions();
     await getCities();
+    const token_localstorage = localStorage.getItem("token");
+    if (token_localstorage) {
+      $token = token_localstorage;
+      $viewStates = 'active';
+    }
   });
 </script>
 

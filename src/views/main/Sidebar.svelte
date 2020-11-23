@@ -1,27 +1,29 @@
 <script>
   import { Button } from "smelte";
-  import { user } from "../../utils/stores/user";
+  // import { user } from "../../utils/stores/user";
   import { sidemenu } from "../../utils/stores/sidemenu";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { onMount } from "svelte";
 
-  $: usergroup = $user.user.groups;
+  export let user;
+
+  $: usergroup = user.user.groups;
   $: navMenu = $sidemenu.find((sm) => usergroup == sm.id).menu;
 
   onMount(() => {
-    const active = navMenu.filter(i => i.active)[0];
+    const active = navMenu.filter((i) => i.active)[0];
     activeHeader.set(active.text);
-  })
+  });
 
   const setActive = (id) => {
     navMenu = navMenu.map((i) => {
-      if(i.id == id) {
+      if (i.id == id) {
         activeHeader.set(i.text);
-        return  { ...i, active: true }
-      } else { 
-        return { ...i, active: false }
+        return { ...i, active: true };
+      } else {
+        return { ...i, active: false };
       }
-    })
+    });
   };
 
   $: console.log($sidemenu);
@@ -56,17 +58,19 @@
       add="px-0" />
   </div>
   <div class="p-2 pt-4">
-    {#each navMenu as item (item.id)}
-      <Button
-        block
-        text
-        class="text-left"
-        add={item.active ? 'text-primary-500' : ''}
-        icon={item.icon}
-        iconClass="mr-2"
-        on:click={() => setActive(item.id)}>
-        {item.text}
-      </Button>
-    {/each}
+    {#if navMenu}
+      {#each navMenu as item (item.id)}
+        <Button
+          block
+          text
+          class="text-left"
+          add={item.active ? 'text-primary-500' : ''}
+          icon={item.icon}
+          iconClass="mr-2"
+          on:click={() => setActive(item.id)}>
+          {item.text}
+        </Button>
+      {/each}
+    {/if}
   </div>
 </div>

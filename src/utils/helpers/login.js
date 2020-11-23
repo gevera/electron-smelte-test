@@ -8,7 +8,7 @@ const URL = get(tempConfig);
 
 export const login = async (data) => {
     const { username, password } = data;
-    console.log(username, password);
+    // console.log(username, password);
     const response = await fetch(`${URL.server_URL}${URL.login}`, {
         method: 'POST',
         headers: {
@@ -18,11 +18,15 @@ export const login = async (data) => {
     });
     if (response.ok) {
         const data = await response.json();
-        const { token: tokenRecieved } = data;
-        token.set(tokenRecieved);
-        const responseMe = await getMe(tokenRecieved);
+        // console.log(`LOGIN DATA ===>`);
+        // console.log(data)
+        // console.log(data.token);
+        localStorage.setItem("token", data.token);
+        token.set(data.token);
+        const responseMe = await getMe(data.token);
         if (responseMe.success) {
             user.set(responseMe.data[0]);
+            // console.log(`LOGIN DATA ===> ${JSON.stringify(responseMe.data[0], null, 2)}`)
             return { success: true }
         }
     }
