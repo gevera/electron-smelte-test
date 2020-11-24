@@ -2,7 +2,7 @@
   import Heading from "../../components/common/Heading.svelte";
   import SaveClose from "../../components/common/SaveClose.svelte";
   import { TextField, Button } from "smelte";
-  import DataZakazchik from "../../components/common/DataZakazchik.svelte";
+  import DataZakazchik from "../../components/common/DataZakaz.svelte";
 </script>
 
 <div class="h-full w-full flex flex-col justify-between py-6">

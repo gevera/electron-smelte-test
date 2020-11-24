@@ -1,38 +1,33 @@
 <script>
-  import { ProgressCircular } from "smelte";
   import { tempConfig } from "../../utils/stores/tempConfigs";
-  import { token } from "../../utils/stores/token";
   import { orderID } from "../../utils/stores/order";
+  import { token } from "../../utils/stores/token";
   import { regions, cities } from "../../utils/stores/regions";
+  import { ProgressCircular } from 'smelte';
 
-  let city = '',
-      region = '';
+  let city = "",
+    region = "";
 
   const URL = `${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`;
   const fetchOrder = async () => {
     const response = await fetch(URL, {
       headers: {
-        "Authorization": `token ${$token}`,
+        Authorization: `token ${$token}`,
       },
     });
     const data = await response.json();
-    city = $cities.filter(c => c.id == data.city)[0].name;
-    region = $regions.filter(c => c.id == data.region)[0].name;
+    city = $cities.filter((c) => c.id == data.city)[0].name;
+    region = $regions.filter((c) => c.id == data.region)[0].name;
     return data;
   };
 </script>
 
-<style>
-</style>
-
-<div class="">
-  {#await fetchOrder()}
-    <ProgressCircular />
-  {:then data}
-    <div class="flex items-center justify-between p-6">
-      <h5 class="text-dark-500"># {data.pk}</h5>
-      <h5 class="text-primary-500">На модерации</h5>
+{#await fetchOrder()}
+    <div class="w-full h-full grid place-items-center">
+      <ProgressCircular />
     </div>
+  {:then data}
+    <h5 class="text-dark-500 px-6 mb-4"># {data.pk}</h5>
     <div class="">
       <table class="table-fixed w-full">
         <tbody class="text-md">
@@ -62,4 +57,3 @@
       </table>
     </div>
   {/await}
-</div>

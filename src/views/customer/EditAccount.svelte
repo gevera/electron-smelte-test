@@ -34,7 +34,7 @@
         method: "PUT",
         headers: {
           "content-type": "application/json",
-          Authorization: `token ${$token}`,
+          "Authorization": `token ${$token}`,
         },
         body: JSON.stringify({ ...updatedUser }),
       }

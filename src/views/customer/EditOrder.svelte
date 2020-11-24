@@ -2,6 +2,7 @@
   import { TextField, Select, Snackbar, ProgressCircular } from "smelte";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { token } from "../../utils/stores/token";
+  import { user } from "../../utils/stores/user";
   import { orderID } from "../../utils/stores/order";
   import { regions, cities } from "../../utils/stores/regions";
   import { onMount } from "svelte";
@@ -43,6 +44,7 @@
       customer_address,
       city,
       region,
+      created_by,
       order_type,
       order_source,
     } = fetchedData;
@@ -54,7 +56,7 @@
       region,
       order_type,
       order_source,
-      datail: "test"
+      created_by
     };
   });
   const saveEdit = async () => {
@@ -62,7 +64,7 @@
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        Authorization: `token ${$token}`,
+        "Authorization": `token ${$token}`,
       },
       body: JSON.stringify(order),
     });

@@ -20,12 +20,6 @@
     0
   );
 
-  //         "status": 1,
-  //         "created_by": 2,
-  //         "order_type": 2,
-  //         "order_source": 2,
-  //         "order_amount": 100,
-
   const sendOrder = async () => {
     const newOrder = {
       customer,

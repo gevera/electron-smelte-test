@@ -1,6 +1,6 @@
 <script>
   import { Button } from "smelte";
-  import DataZakazchik from "../../components/common/DataZakazchik.svelte";
+  import DataZakaz from "../../components/common/DataZakaz.svelte";
   import Heading from "../../components/common/Heading.svelte";
   import Person from "../../components/common/Person.svelte";
 import SaveClose from "../../components/common/SaveClose.svelte";
@@ -21,7 +21,7 @@ import SaveClose from "../../components/common/SaveClose.svelte";
       </div>
     </div>
     <Heading heading="Данные" addClass="my-2 mx-4" />
-    <DataZakazchik />
+    <DataZakaz />
 
     <div class="flex items-center justify-between mt-2 px-6">
       <Heading heading="Отчет" addClass="mr-4 flex-grow" />

@@ -8,16 +8,20 @@
   import OrdersCompleted from "../contractor/OrdersCompleted.svelte";
   import EditAccount from "../contractor/EditAccount.svelte";
   import NewReport from "../contractor/NewReport.svelte";
-  import OrderReviewContract from "../contractor/OrderReview.svelte";
+  import OrderReview from "../contractor/OrderReview.svelte";
   import OrderPreview from "../contractor/OrderPreview.svelte";
-  import EditReportContract from "../contractor/EditReport.svelte";
-  import EditOrderContract from "../contractor/EditOrder.svelte";
+  import EditReport from "../contractor/EditReport.svelte";
+  import EditOrder from "../contractor/EditOrder.svelte";
 </script>
 
 {#if $activeHeader == 'Новая заявка'}
   <NewOrder />
 {:else if $activeHeader == 'Взять заявку'}
   <TakeOrder />
+{:else if $activeHeader == 'Просмотр заявки'}
+  <OrderReview />
+{:else if $activeHeader == 'Новый отчет'}
+  <NewReport />
 {:else if $activeHeader == 'Заявки в работе'}
   <OrdersInProgress />
 {:else if $activeHeader == 'Заявки на модерации'}

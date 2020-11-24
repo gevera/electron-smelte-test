@@ -2,6 +2,7 @@ import { get } from 'svelte/store';
 import { tempConfig } from '../stores/tempConfigs';
 import { token } from '../stores/token';
 import { user } from '../stores/user';
+import { viewStates } from '../stores/viewStates';
 import { getMe } from './me';
 
 const URL = get(tempConfig);
@@ -26,7 +27,7 @@ export const login = async (data) => {
         const responseMe = await getMe(data.token);
         if (responseMe.success) {
             user.set(responseMe.data[0]);
-            // console.log(`LOGIN DATA ===> ${JSON.stringify(responseMe.data[0], null, 2)}`)
+                        // console.log(`LOGIN DATA ===> ${JSON.stringify(responseMe.data[0], null, 2)}`)
             return { success: true }
         }
     }

@@ -2,6 +2,7 @@
   import { TextField, Button } from "smelte";
   import { login } from "../../utils/helpers/login";
   import { viewStates } from "../../utils/stores/viewStates";
+  import { user } from "../../utils/stores/user";
 
   let data = {
     username: "",
@@ -13,7 +14,15 @@
     if (success) {
       data.username = "";
       data.password = "";
-      $viewStates = "active";
+      const updatePassword =
+        $user.user.groups != 4 && $user.user.first_password == true;
+      console.log(updatePassword);
+      if (updatePassword) {
+        localStorage.setItem("update_password", true);
+        viewStates.set("change password");
+      } else {
+        $viewStates = "active";
+      }
     }
   };
 
@@ -84,8 +93,7 @@
         label="Логин"
         outlined
         color="secondary"
-        bind:value={data.username}
-        />
+        bind:value={data.username} />
       <TextField
         label="Пароль"
         type="password"

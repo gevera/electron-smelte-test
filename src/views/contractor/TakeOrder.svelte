@@ -1,78 +1,76 @@
 <script>
-    import { DataTable, Select } from "smelte";
-    let open = true;
-    let value1 = "";
-  
-    const items = [
+  import { Select } from "smelte";
+  import { tempConfig } from "../../utils/stores/tempConfigs";
+  import { cities } from "../../utils/stores/regions";
+  import { token } from "../../utils/stores/token";
+  import Submenu from "../../components/common/Submenu.svelte";
+
+  let dataFetched = [];
+  let city = "";
+  let loading = false;
+
+  async function getData() {
+    if (typeof window === "undefined") return;
+    loading = true;
+    const res = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.orderList}`,
       {
-        value: 1,
-        text: "Ufa",
-      },
-      {
-        value: 2,
-        text: "Sterlitamak",
-      },
-    ];
-    let columns = [
-      {
-        field: "name",
-        label: "Имя",
-        sortable: true,
-        editable: false,
-        class: "text-base",
-      },
-      {
-        field: "telephone",
-        label: "Телефон",
-        class: "text-primary-500 text-base",
-        sortable: true,
-        editable: false,
-      },
-      {
-        label: "Регион",
-        field: "region",
-        class: "text-base",
-        sortable: true,
-        editable: false,
-        iconAfter: true,
-      },
-      {
-        label: "-",
-        editable: false,
-        sortable: false,
-        value: (v) => `
-                        <Menu bind:open {items} bind:value={selected}>
-                            <div slot="activator">
-                            <Button text light flat icon="more_vert on:click={() => console.log('Clicked' + v)}">
-                                <span class="material-icons text-primary-500">more_vert</span>
-                            </Button>
-                        </div>
-                        </Menu>`,
-      },
-    ];
-    let data = [
-      { name: "test 1", telephone: "4353453", region: "crimea" },
-      { name: "test 2", telephone: "4776634785", region: "moscow" },
-      { name: "test 3", telephone: "65565656", region: "altai" },
-      {
-        name: "test 4",
-        telephone: "99596959659",
-        region: "vladivostok",
-      },
-    ];
-  </script>
-  
-  <div class="w-full h-full py-6">
-    <div class="flex px-6 items-center">
-      <p class="text-dark-500 mr-2">Город</p>
-      <Select
-        class="w-auto  p-2 border-none"
-        outlined
-        {items}
-        on:change={(v) => (value1 = v.detail)} />
-    </div>
-    <div class="mt-4">
-      <DataTable class="w-full text-base" {columns} {data} />
-    </div>
+        headers: {
+          Authorization: `token ${$token}`,
+        },
+      }
+    );
+    if (res.ok) {
+      const body = await res.json();
+      dataFetched = body;
+      console.log(dataFetched);
+      loading = false;
+    }
+  }
+
+  getData();
+
+  $: data = dataFetched.map((d) => ({
+    ...d,
+    city: [...$cities].filter((c) => c.id == d.city)[0].name,
+  }));
+
+  $: itemsCity = [...$cities].map((r) => ({ value: r.id, text: r.name }));
+
+
+
+
+  $: console.log(data);
+</script>
+
+<div class="py-6">
+  <div class="flex px-6 items-center">
+    <p class="text-dark-500 mr-2">Город</p>
+    <Select
+      bind:value={city}
+      outlined
+      autocomplete
+      label="Город"
+      items={itemsCity} />
   </div>
-  
+  <ul>
+    {#each data as item, i (item.id)}
+      <li
+        class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
+        class:bg-gray-100={i % 2}>
+        <div class="w-3/12 border-r pl-6 text-dark-500">{item.customer}</div>
+        <div class="w-2/12 border-r pl-4 text-dark-500">
+          {item.customer_number}
+        </div>
+        <div class="w-5/12 border-r pl-4 text-dark-500">
+          г.
+          {item.city}
+          {item.customer_address}
+        </div>
+        <div class="w-2/12 px-6 flex justify-start">
+          <Submenu id={item.id} />
+        </div>
+      </li>
+    {/each}
+  </ul>
+</div>

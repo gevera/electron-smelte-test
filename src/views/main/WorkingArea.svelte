@@ -11,7 +11,7 @@
   const fetchMe = async () => {
     const response = await fetch(`${$tempConfig.server_URL}${$tempConfig.me}`, {
       headers: {
-        Authorization: `token ${$token}`,
+        "Authorization": `token ${$token}`,
       },
     });
     const data = await response.json();

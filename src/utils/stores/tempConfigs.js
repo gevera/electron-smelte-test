@@ -9,6 +9,6 @@ export const tempConfig = readable({
     region: '/region/region/',
     city: '/region/city/',
     orderList: '/order/list/',
-    orderCreate: '/order/create/'
-
+    orderCreate: '/order/create/',
+    password: '/users/password/'
 })

@@ -1,22 +1,23 @@
 <script>
-  import DataZakazchik from "../../components/common/DataZakazchik.svelte";
+  import { activeHeader } from "../../utils/stores/activeHeader";
   import Heading from "../../components/common/Heading.svelte";
+  import DataZakaz from "../../components/common/DataZakaz.svelte";
+
+  const gotoAddReport = () => {
+    $activeHeader = "Новый отчет";
+  };
 </script>
 
 <style>
 </style>
 
-<div class="">
-  <div class="flex items-center justify-between p-6">
-    <h5 class="text-dark-500"># 43534435</h5>
-    <h5 class="text-primary-500">Пожаловаться</h5>
-  </div>
-  <div class="">
-    <DataZakazchik />
-  </div>
+<div class="py-6">
+  <DataZakaz />
   <Heading heading="Отчет" addClass="my-6 px-6" />
-  <div class="px-6 my-6 flex items-center cursor-pointer text-blue-500">
-    <span class="material-icons mr-2">add_circle_outline</span><span
-      class="hover:underline">Добавить отчет</span>
+  <div class="px-6 my-6 flex items-center text-blue-500">
+    <span
+      class="material-icons mr-2 cursor-pointer">add_circle_outline</span><span
+      class="hover:underline cursor-pointer"
+      on:click={gotoAddReport}>Добавить отчет</span>
   </div>
 </div>

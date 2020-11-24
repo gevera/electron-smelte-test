@@ -2,14 +2,14 @@
   import Heading from "../../components/common/Heading.svelte";
   import SaveClose from "../../components/common/SaveClose.svelte";
   import { TextField, Button } from "smelte";
-  import DataZakazchik from "../../components/common/DataZakazchik.svelte";
+  import DataZakaz from "../../components/common/DataZakaz.svelte";
 </script>
 
 <div class="h-full w-full flex flex-col justify-between py-6">
   <div class="">
     <h5 class="text-dark-500 mb-2 px-6"># 2433242342</h5>
     <Heading heading="Информатция" addClass="px-6" />
-    <DataZakazchik />
+    <DataZakaz />
     <Heading heading="Отчет" addClass="px-6" />
     <div class="flex my-6 px-6">
       <img src="./images/avatar.jpeg" alt="photo_big" class="h-32 w-32 mr-4" />
