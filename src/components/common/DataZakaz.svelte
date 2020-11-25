@@ -1,6 +1,6 @@
 <script>
   import { tempConfig } from "../../utils/stores/tempConfigs";
-  import { orderID } from "../../utils/stores/order";
+  import { orderID, status } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
   import { regions, cities } from "../../utils/stores/regions";
   import { ProgressCircular } from 'smelte';
@@ -18,6 +18,7 @@
     const data = await response.json();
     city = $cities.filter((c) => c.id == data.city)[0].name;
     region = $regions.filter((c) => c.id == data.region)[0].name;
+    $status = data.status;
     return data;
   };
 </script>

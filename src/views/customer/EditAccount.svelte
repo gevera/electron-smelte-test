@@ -47,8 +47,6 @@
       showSnackbarFailure = true;
     }
   };
-
-  $: console.log($token);
 </script>
 
 <div class="w-full h-full p-8 flex flex-col justify-between">

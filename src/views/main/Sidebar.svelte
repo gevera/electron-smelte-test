@@ -40,7 +40,7 @@
   }
 </style>
 
-<div class="sidebar p-2 bg-dark-500 h-screen">
+<div class="sidebar p-2 bg-dark-500 h-full">
   <div class="topper border-b-2 border-gray-300 m-2 flex">
     <Button
       text

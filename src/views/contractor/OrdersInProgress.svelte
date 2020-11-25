@@ -1,9 +1,11 @@
 <script>
-  import { Select } from "smelte";
+  import { Select, Button } from "smelte";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { cities } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
+  import { orderID } from "../../utils/stores/order";
   import Submenu from "../../components/common/Submenu.svelte";
+  import { activeHeader } from "../../utils/stores/activeHeader";
 
   let dataFetched = [];
   let city = "";
@@ -50,12 +52,12 @@
 
 <div class="py-6 h-full w-full">
   {#if data.length == 0}
-  <div class="h-full grid place-items-center"> 
-    <div class="flex flex-col items-center">
-      <span class="material-icons big text-dark-500">work_outline</span>
-      <h5 class="text-dark-500 font-thin">Заявок в работе пока нет</h5>
+    <div class="h-full grid place-items-center">
+      <div class="flex flex-col items-center">
+        <span class="material-icons big text-dark-500">work_outline</span>
+        <h5 class="text-dark-500 font-thin">Заявок в работе пока нет</h5>
+      </div>
     </div>
-  </div>
   {:else}
     <ul>
       {#each data as item, i (item.id)}
@@ -63,7 +65,7 @@
           class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
           class:bg-gray-100={i % 2}>
           <div class="w-3/12 border-r pl-6 text-dark-500">{item.customer}</div>
-          <div class="w-2/12 border-r pl-4 text-dark-500">
+          <div class="w-3/12 border-r pl-4 text-dark-500">
             {item.customer_number}
           </div>
           <div class="w-5/12 border-r pl-4 text-dark-500">
@@ -71,8 +73,16 @@
             {item.city}
             {item.customer_address}
           </div>
-          <div class="w-2/12 px-6 flex justify-start">
-            <Submenu id={item.id} />
+          <div class="w-1/12 px-6 flex justify-start">
+            <!-- <Submenu id={item.id} icon="visibility"/> -->
+            <Button
+              text
+              color="dark"
+              icon="visibility"
+              on:click={() => {
+                $activeHeader = 'Просмотр заявки';
+                $orderID = item.id;
+              }} />
           </div>
         </li>
       {/each}

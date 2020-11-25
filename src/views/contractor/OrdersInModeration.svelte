@@ -73,7 +73,7 @@
         class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
         class:bg-gray-100={i % 2}>
         <div class="w-3/12 border-r pl-6 text-dark-500">{item.customer}</div>
-        <div class="w-2/12 border-r pl-4 text-dark-500">
+        <div class="w-3/12 border-r pl-4 text-dark-500">
           {item.customer_number}
         </div>
         <div class="w-5/12 border-r pl-4 text-dark-500">
@@ -81,7 +81,7 @@
           {item.city}
           {item.customer_address}
         </div>
-        <div class="w-2/12 px-6 flex justify-start">
+        <div class="w-1/12 px-6 flex justify-start">
           <Submenu id={item.id} />
         </div>
       </li>

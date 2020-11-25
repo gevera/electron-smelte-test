@@ -10,5 +10,7 @@ export const tempConfig = readable({
     city: '/region/city/',
     orderList: '/order/list/',
     orderCreate: '/order/create/',
+    orderExecute: '/order/execute/',
+    orderImage: '/order/review-images/',
     password: '/users/password/'
 })
