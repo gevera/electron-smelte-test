@@ -6,11 +6,15 @@ export const tempConfig = readable({
     login: '/users/login/',
     me: '/users/me/',
     customer: '/users/customer/',
+    executor: '/users/executor/',
     region: '/region/region/',
     city: '/region/city/',
     orderList: '/order/list/',
     orderCreate: '/order/create/',
     orderExecute: '/order/execute/',
+    orderReviews: '/order/reviews/',
     orderImage: '/order/review-images/',
-    password: '/users/password/'
+    password: '/users/password/',
+    passport: '/passport/',
+    wallet: '/wallet/'
 })

@@ -3,11 +3,24 @@
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { cities } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
+  import { activeHeader } from "../../utils/stores/activeHeader";
+  import { orderID } from "../../utils/stores/order";
   import Submenu from "../../components/common/Submenu.svelte";
 
   let dataFetched = [];
   let city = "";
   let loading = false;
+
+  let itemsData =  [
+    {
+      value: 1,
+      text: "Редактирование",
+      action: (id) => {
+        $activeHeader = "Просмотр заявки";
+        $orderID = id;
+      },
+    }
+  ]
 
   async function getData() {
     if (typeof window === "undefined") return;
@@ -82,7 +95,7 @@
           {item.customer_address}
         </div>
         <div class="w-1/12 px-6 flex justify-start">
-          <Submenu id={item.id} />
+          <Submenu id={item.id} {itemsData}/>
         </div>
       </li>
     {/each}

@@ -4,33 +4,98 @@
   import { TextField, Dialog, Snackbar, Button } from "smelte";
   import Person from "../../components/common/Person.svelte";
   import { token } from "../../utils/stores/token";
+  import { tempConfig } from "../../utils/stores/tempConfigs";
   import { getMe } from "../../utils/helpers/me";
   import { onMount } from "svelte";
+  import { wallet, user } from "../../utils/stores/user";
 
   let email = "",
     phone = "",
     password = "",
-    bik="",
-    inn="",
-    bank_code="",
-    bank_name="",
+    bik = "",
+    bank_name = "",
+    calc_account = "",
+    corr_account = "",
     showDialog = false,
     showSnackbarSuccess = false,
     showSnackbarFailure = false;
-  
 
-  //TODO Get wallet data
+  $: kosh = { ...$wallet };
+
+  //TODO Get Regional representative data
+  
+  const getWallet = async () => {
+    const response = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.wallet}`,
+      {
+        headers: {
+          Authorization: `token ${$token}`,
+        },
+      }
+    );
+    const wallet = await response.json();
+    return wallet[0];
+  };
 
   onMount(async () => {
     const { data } = await getMe($token);
+    const walletData = await getWallet();
+    console.log(walletData);
     console.log(data[0]);
+    $wallet = { ...walletData };
+    bik = walletData.bik;
+    bank_name = walletData.bank_name;
+    calc_account = walletData.calc_account;
+    corr_account = walletData.corr_account;
     phone = data[0].user.phone;
     email = data[0].user.email;
   });
 
   const updateAccount = async () => {
+    const responseWallet = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.wallet}${$wallet.id}/`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `token ${token}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ...kosh,
+          bik,
+          bank_name,
+          calc_account,
+          corr_account,
+        }),
+      }
+    );
+    const responseAcc = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.executor}${$user.user.pk}/`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `token ${token}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ...$user,
+          user: {
+            ...$user.user,
+            email,
+            phone,
+            password,
+          },
+        }),
+      }
+    );
 
-  }
+    if (responseWallet.ok && responseAcc.ok) {
+      showDialog = false;
+      showSnackbarSuccess = true;
+    } else {
+      showSnackbarFailure = true;
+    }
+  };
 </script>
 
 <div class="h-full w-full flex flex-col justify-between py-6">
@@ -60,13 +125,25 @@
     </div>
     <Heading heading="Платежные реквизиты" />
     <div class="my-4">
-      <TextField label="Филиал" outlined color="secondary" />
-      <TextField label="Р/C" outlined color="secondary" />
-      <TextField label="К/C" outlined color="secondary" />
-      <TextField label="БИК" outlined color="secondary" bind:value={bik}/>
+      <TextField
+        label="Филиал"
+        outlined
+        color="secondary"
+        bind:value={bank_name} />
+      <TextField
+        label="Р/C"
+        outlined
+        color="secondary"
+        bind:value={calc_account} />
+      <TextField
+        label="К/C"
+        outlined
+        color="secondary"
+        bind:value={corr_account} />
+      <TextField label="БИК" outlined color="secondary" bind:value={bik} />
     </div>
   </div>
-  <SaveClose />
+  <SaveClose positive={() => (showDialog = true)} />
 </div>
 
 <Dialog bind:value={showDialog}>
@@ -81,10 +158,9 @@
 </Dialog>
 
 <Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-   <div>Данные успешно обновлены</div>
+  <div>Данные успешно обновлены</div>
 </Snackbar>
 
 <Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
   <div>Произошла ошибка. Попробуйте ещё раз позже</div>
 </Snackbar>
-

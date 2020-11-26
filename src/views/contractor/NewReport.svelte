@@ -6,13 +6,25 @@
   import DataZakaz from "../../components/common/DataZakaz.svelte";
   import { orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
-  let fotka, scan, fileinput, readerF, fotoInput, readerS, scanInput;
+  import { activeHeader } from "../../utils/stores/activeHeader";
+  import { Snackbar } from "smelte";
+  let fotka,
+    imageF,
+    imageS,
+    scan,
+    fileinput,
+    readerF,
+    fotoInput,
+    readerS,
+    scanInput;
+  let showSnackbarFailure = false,
+    showSnackbarSuccess = false;
   let text = "";
   const onFotoSelected = (e) => {
-    let image = e.target.files[0];
+    imageF = e.target.files[0];
     readerF = new FileReader();
-    if (image) {
-      readerF.readAsDataURL(image);
+    if (imageF) {
+      readerF.readAsDataURL(imageF);
     }
     readerF.onload = (e) => {
       fotka = e.target.result;
@@ -22,10 +34,10 @@
   };
 
   const onScanSelected = (e) => {
-    let image = e.target.files[0];
+    imageS = e.target.files[0];
     readerS = new FileReader();
-    if (image) {
-      readerS.readAsDataURL(image);
+    if (imageS) {
+      readerS.readAsDataURL(imageS);
     }
     readerS.onload = (e) => {
       scan = e.target.result;
@@ -34,41 +46,27 @@
     };
   };
 
-  const sendFoto = async () => {
-    const formData = new FormData();
-    formData.append("images", fotka);
-    // formData.append("dataFile", files[0]);
+  const sendReport = async () => {
+    const form = new FormData();
+    form.append("images", imageF);
+    form.append("scans", imageS);
+    form.append("description", text);
+    form.append("order", $orderID);
     const response = await fetch(
-      `${$tempConfig.server_URL}${$tempConfig.orderImage}`,
+      `${$tempConfig.server_URL}${$tempConfig.orderReviews}`,
       {
         method: "POST",
         headers: {
-          "content-type": "application/json",
           Authorization: `token ${$token}`,
         },
-        body: JSON.stringify({ images: formData, review: orderID})
+        body: form,
       }
     );
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-    }
-  };
-
-  const sendScan = async () => {
-    //scans
-  };
-  const sendText = async () => {};
-
-  const sendReport = async () => {
-    if (fotka) {
-      await sendFoto();
-    }
-    if (scan) {
-      await sendScan();
-    }
-    if (text) {
-      await sendText();
+    if(response.ok) {
+      showSnackbarSuccess = true;
+      $activeHeader = "Заявки на модерации";
+    } else {
+      showSnackbarFailure = true;
     }
   };
 </script>
@@ -130,3 +128,11 @@
   </div>
   <SaveClose positive={sendReport} />
 </div>
+
+<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
+  <div>Данные успешно загружены</div>
+</Snackbar>
+
+<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
+  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
+</Snackbar>

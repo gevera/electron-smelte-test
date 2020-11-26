@@ -1,7 +1,7 @@
 <script>
   import Heading from "../../components/common/Heading.svelte";
   import { Button } from "smelte";
-import DataZakazchik from "../../components/common/DataZakaz.svelte";
+  import DataZakazchik from "../../components/common/DataZakaz.svelte";
 </script>
 
 <div class="w-full h-full py-6">

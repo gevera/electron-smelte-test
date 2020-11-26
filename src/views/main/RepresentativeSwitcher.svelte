@@ -17,6 +17,8 @@
   <OrderReview />
 {:else if $activeHeader == 'Новый исполнитель'}
   <NewContractor />
+{:else if $activeHeader == 'Просмотр исполнителя'}
+  <ContractorReview />
 {:else if $activeHeader == 'Таблица исполнителей'}
   <ContractorTable />
 {:else if $activeHeader == 'Настройка аккаунта'}

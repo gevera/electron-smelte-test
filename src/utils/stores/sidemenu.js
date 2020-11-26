@@ -69,12 +69,12 @@ export const sidemenu = writable([
                 active: false,
                 icon: "people",
             },
-            {
-                id: 7,
-                text: "Заказчики",
-                active: false,
-                icon: "record_voice_over",
-            },
+            // {
+            //     id: 7,
+            //     text: "Заказчики",
+            //     active: false,
+            //     icon: "record_voice_over",
+            // },
         ]
     },
     {
