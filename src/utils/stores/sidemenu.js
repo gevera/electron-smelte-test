@@ -53,18 +53,24 @@ export const sidemenu = writable([
             },
             {
                 id: 4,
+                text: "Заявки в работе",
+                active: false,
+                icon: "work_outline",
+            },
+            {
+                id: 5,
                 text: "Исполненные заявки",
                 active: false,
                 icon: "done_outline",
             },
             {
-                id: 5,
+                id: 6,
                 text: "Новый исполнитель",
                 active: false,
                 icon: "perm_identity",
             },
             {
-                id: 6,
+                id: 7,
                 text: "Таблица исполнителей",
                 active: false,
                 icon: "people",

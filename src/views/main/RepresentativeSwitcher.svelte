@@ -3,18 +3,31 @@
   import NewContractor from "../representative/NewContractor.svelte";
   import ContractorTable from "../representative/ContractorTable.svelte";
   import ContractorReview from "../representative/ContractorReview.svelte";
-  import OrderReview from "../representative/OrderReview.svelte";
+  import OrdersReview from "../representative/OrdersReview.svelte";
   import OrderReport from "../representative/OrderReport.svelte";
   import EditReport from "../representative/EditReport.svelte";
+  import OrdersInProgress from "../representative/OrdersInProgress.svelte";
+  import SingleReview from "../representative/SingleReview.svelte";
+  import TakeOrder from "../representative/TakeOrder.svelte";
   import EditAccount from "../representative/EditAccount.svelte";
-  import AllOrders from "../representative/AllOrders.svelte";
+  import OrdersCompleted from "../representative/OrdersCompleted.svelte";
   import NewOrder from "../representative/NewOrder.svelte";
 </script>
 
 {#if $activeHeader == 'Новая заявка'}
   <NewOrder />
 {:else if $activeHeader == 'Проверка заявок'}
-  <OrderReview />
+  <OrdersReview />
+{:else if $activeHeader == 'Просмотр заявки'}
+  <SingleReview />
+{:else if $activeHeader == 'Взять заявку'}
+  <TakeOrder />
+{:else if $activeHeader == 'Проверка отчета по заявке'}
+  <OrderReport />
+{:else if $activeHeader == 'Заявки в работе'}
+  <OrdersInProgress />
+{:else if $activeHeader == 'Исполненные заявки'}
+  <OrdersCompleted />
 {:else if $activeHeader == 'Новый исполнитель'}
   <NewContractor />
 {:else if $activeHeader == 'Просмотр исполнителя'}

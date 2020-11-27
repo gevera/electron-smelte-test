@@ -7,9 +7,9 @@
   import RegionalRepresentative from "../admin/RegionalRepresentative.svelte";
   import ContractorTableAdmin from "../admin/ContractorTable.svelte";
   import ContractorReview from "../admin/ContractorReview.svelte";
-
   import RegionTableAdmin from "../admin/RegionTable.svelte";
 </script>
+
 
 {#if $activeHeader == 'Новый регион'}
   <NewRegionAdmin />

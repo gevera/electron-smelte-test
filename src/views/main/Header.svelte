@@ -8,7 +8,7 @@
 
   export let user;
 
-  onMount(() => console.log("HEADER MOUNTED!"));
+  // onMount(() => console.log("HEADER MOUNTED!"));
 
   const openAccountSettings = () => {
     if (user.user.groups == 2 || user.user.groups == 3) {
@@ -27,7 +27,7 @@
   $: region = $regions.filter((r) => r.id == user.user.region)[0].name;
   $: group = user.user.groups;
 
-  $: console.log(` HEADER DATA ==>> ${JSON.stringify(user, null, 2)}`);
+  // $: console.log(` HEADER DATA ==>> ${JSON.stringify(user, null, 2)}`);
 </script>
 
 <div class="flex items-center justify-between w-full p-2">

@@ -1,15 +1,58 @@
 <script>
-  import { Button } from "smelte";
+  import { Button, Dialog, TextField, Snackbar } from "smelte";
   import DataZakaz from "../../components/common/DataZakaz.svelte";
   import Heading from "../../components/common/Heading.svelte";
   import Person from "../../components/common/Person.svelte";
-import SaveClose from "../../components/common/SaveClose.svelte";
-  let showReport = false;
+  import SaveClose from "../../components/common/SaveClose.svelte";
+  import { orderID } from "../../utils/stores/order";
+  import { token } from "../../utils/stores/token";
+  import { tempConfig } from "../../utils/stores/tempConfigs";
+
+  // TODO Fix error with detail
+  
+  let confirmStop = false,
+    rejectReason = "",
+    showReject = true,
+    showSnackbarSuccess = false,
+    showSnackbarFailure = false;
+  const sendReject = async () => {
+    const response = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.orderDecline}${$orderID}/`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `token ${$token}`,
+        },
+        body: JSON.stringify({ description: rejectReason }),
+      }
+    );
+    if (response.ok) {
+      console.log(response);
+      confirmStop = false;
+      showReject = false;
+      showSnackbarSuccess = true;
+    } else {
+      showSnackbarFailure = true;
+    }
+  };
 </script>
 
 <div class="h-full w-full py-6 flex flex-col justify-between">
   <div class="">
-    <h5 class="text-dark-500 px-6 mb-4"># 34230324</h5>
+    <div class="flex justify-between px-6">
+      <h5 class="text-dark-500 px-6 mb-4"># {$orderID}</h5>
+      {#if showReject}
+        <Button
+          text
+          icon="highlight_off"
+          add="text-primary-500"
+          iconClass="mr-6"
+          on:click={() => (confirmStop = !confirmStop)}>
+          Отклонить
+        </Button>
+      {/if}
+    </div>
     <div class="flex px-6 justify-around">
       <div class="flex-grow mr-4">
         <Heading heading="Заказчик" />
@@ -30,12 +73,15 @@ import SaveClose from "../../components/common/SaveClose.svelte";
         icon="edit"
         add="text-primary-500"
         iconClass="mr-6"
-        on:click={() => (showReport = !showReport)}>
+        on:click={() => (confirmStop = !confirmStop)}>
         Редактировать
       </Button>
     </div>
     <div class="flex px-6 justify-between">
-      <img src="./images/avatar.jpeg" alt="photo_report" class="w-32 h-32 mr-4" />
+      <img
+        src="./images/avatar.jpeg"
+        alt="photo_report"
+        class="w-32 h-32 mr-4" />
       <p class="flex-grow">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi esse
         perferendis laudantium quos, nobis ex rerum at laborum est provident
@@ -46,3 +92,27 @@ import SaveClose from "../../components/common/SaveClose.svelte";
   </div>
   <SaveClose />
 </div>
+
+<Dialog bind:value={confirmStop}>
+  <h5 slot="title" class="mx-32 text-dark-500">Причина отказа</h5>
+  <TextField
+    rows="5"
+    outlined
+    textarea
+    bind:value={rejectReason}
+    color="secondary"
+    label="Сообщение" />
+  <div slot="actions">
+    <Button outlined color="dark" on:click={() => (confirmStop = false)}>
+      Отмена
+    </Button>
+    <Button on:click={sendReject}>Отправить</Button>
+  </div>
+</Dialog>
+
+<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
+  <div>Отчет был успешно отклонен</div>
+</Snackbar>
+<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
+  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
+</Snackbar>

@@ -68,16 +68,10 @@
     },
   }));
 
-  const itemsData = [
-    {
-      value: 1,
-      text: "Просмотр",
-      action: (id) => {
-        $activeHeader = "Просмотр исполнителя";
-        $orderID = id;
-      },
-    },
-  ]
+  const viewContractor = (id) => {
+    $activeHeader = "Просмотр исполнителя";
+    $orderID = id;
+  };
 </script>
 
 <div class="w-full h-full py-6">
@@ -104,7 +98,13 @@
         <div class="w-3/12 border-r pl-4 text-dark-500">{exec.user.phone}</div>
         <div class="w-5/12 border-r pl-4 text-dark-500">{exec.user.region}</div>
         <div class="w-1/12 px-6 flex justify-start">
-          <Submenu id={exec.user.pk} {itemsData}/>
+          <Button
+            text
+            light
+            flat
+            color="dark"
+            icon="visibility"
+            on:click={() => viewContractor(exec.user.pk)} />
         </div>
       </li>
     {/each}

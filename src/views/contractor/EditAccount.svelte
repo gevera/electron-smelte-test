@@ -57,7 +57,7 @@
       {
         method: "PUT",
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `token ${$token}`,
           "content-type": "application/json",
         },
         body: JSON.stringify({
@@ -74,7 +74,7 @@
       {
         method: "PUT",
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `token ${$token}`,
           "content-type": "application/json",
         },
         body: JSON.stringify({

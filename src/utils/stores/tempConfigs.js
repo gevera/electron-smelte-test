@@ -13,6 +13,7 @@ export const tempConfig = readable({
     orderCreate: '/order/create/',
     orderExecute: '/order/execute/',
     orderReviews: '/order/reviews/',
+    orderDecline: '/order/review-decline/',
     orderImage: '/order/review-images/',
     password: '/users/password/',
     passport: '/passport/',

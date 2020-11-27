@@ -6,6 +6,7 @@
   import { tempConfig } from "../../utils/stores/tempConfigs";
   let region = "",
     phone = "",
+    email = "",
     first_name = "",
     last_name = "",
     second_name = "",
@@ -110,6 +111,7 @@
             phone,
             region,
             password,
+            email
           },
           first_name,
           last_name,
@@ -197,6 +199,7 @@
       color="secondary"
       bind:value={second_name} />
     <TextField label="Телефон" outlined color="secondary" bind:value={phone} />
+    <TextField label="Эл. Почта" outlined color="secondary" type="email" bind:value={email} />
     <TextField
     label="Пароль"
     type="password"

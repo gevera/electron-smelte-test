@@ -29,7 +29,7 @@
       <ProgressCircular />
     </div>
   {:then data}
-    <h5 class="text-dark-500 px-6 mb-4"># {data.pk}</h5>
+    <!-- <h5 class="text-dark-500 px-6 mb-4"># {data.pk}</h5> -->
     <div class="">
       <table class="table-fixed w-full">
         <tbody class="text-md">
