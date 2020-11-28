@@ -5,6 +5,7 @@
     first_name: "Jora",
     last_name: "kardan",
   };
+  export let rp;
 </script>
 
 <style>
@@ -18,8 +19,8 @@
   <div class="flex px-1 items-center">
     <img src={person.imgUrl} alt="avatar" class="rounded-full w-12 h-12 mx-2"/>
     <div class="flex flex-col">
-      <p>{person.first_name}</p>
-      <p>{person.last_name}</p>
+      <p>{rp.first_name}</p>
+      <p>{rp.last_name}</p>
     </div>
   </div>
   <div class="border-l-2">

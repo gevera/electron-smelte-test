@@ -18,15 +18,21 @@ export const sidemenu = writable([
             },
             {
                 id: 3,
-                text: "Новый региональный исполнитель",
+                text: "Новый региональный представитель",
                 active: false,
                 icon: "person_outline",
             },
             {
                 id: 4,
-                text: "Таблица исполнителей",
+                text: "Таблица региональный представитель",
                 active: false,
                 icon: "people",
+            }, 
+            {
+                id: 5,
+                text: "Таблица исполнителей",
+                active: false,
+                icon: "groups",
             },
         ]
     },

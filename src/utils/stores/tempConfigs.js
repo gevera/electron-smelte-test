@@ -7,6 +7,7 @@ export const tempConfig = readable({
     me: '/users/me/',
     customer: '/users/customer/',
     executor: '/users/executor/',
+    rp: '/users/rp/',
     region: '/region/region/',
     city: '/region/city/',
     orderList: '/order/list/',

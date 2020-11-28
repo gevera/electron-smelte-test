@@ -232,7 +232,7 @@
 </div>
 
 <Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Новая заявка успешно создана</div>
+  <div>Новый исполнитель успешно добавлен</div>
 </Snackbar>
 <Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
   <div>Произошла ошибка. Попробуйте ещё раз позже</div>
