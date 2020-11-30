@@ -58,13 +58,16 @@
   };
 </script>
 
-<div class="w-full h-full p-8 flex flex-col justify-between">
+<form
+  class="w-full h-full p-8 flex flex-col justify-between"
+  on:submit|preventDefault={createRegion}>
   <div class="">
     <div>
       <Heading heading="Категория 1" />
       <TextField
         label="Название"
         outlined
+        required
         color="secondary"
         prepend="public"
         bind:value={name} />
@@ -144,6 +147,6 @@
       color="secondary" />
   </div>
   <div class="flex justify-end">
-    <Button on:click={createRegion}>Создать</Button>
+    <Button>Создать</Button>
   </div>
-</div>
+</form>

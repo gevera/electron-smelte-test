@@ -1,19 +1,20 @@
 <script>
-  import { TextField, Dialog, Button, Snackbar } from "smelte";
-  import Heading from "../../components/common/Heading.svelte";
-  import SaveClose from "../../components/common/SaveClose.svelte";
+  import { TextField, Dialog, Button } from "smelte";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { getMe } from "../../utils/helpers/me";
   import { user } from "../../utils/stores/user";
   import { token } from "../../utils/stores/token";
   import { onMount } from "svelte";
+  import Heading from "../../components/common/Heading.svelte";
+  import SaveClose from "../../components/common/SaveClose.svelte";
+  import Notifier from "../../components/common/Notifier.svelte";
 
   let email = "",
     phone = "",
     password = "",
     showDialog = false,
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   onMount(async () => {
     const { data } = await getMe($token);
@@ -34,17 +35,16 @@
         method: "PUT",
         headers: {
           "content-type": "application/json",
-          "Authorization": `token ${$token}`,
+          Authorization: `token ${$token}`,
         },
         body: JSON.stringify({ ...updatedUser }),
       }
     );
-    if(response.ok) {
-      showSnackbarSuccess = true;
-      const data = await response.json();
-      console.log(data);
+    if (response.ok) {
+      showSuccess = true;
+      password = "";
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -57,12 +57,14 @@
       label="Эл. Почта"
       type="email"
       outlined
+      required
       color="secondary"
       bind:value={email}
       prepend="email" />
     <TextField
       label="Телефон клиента"
       outlined
+      required
       color="secondary"
       bind:value={phone}
       prepend="call"
@@ -82,10 +84,4 @@
   </div>
 </Dialog>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-   <div>Данные успешно обновлены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно обновлены" />

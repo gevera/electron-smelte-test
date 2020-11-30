@@ -8,6 +8,7 @@
   import { getMe } from "../../utils/helpers/me";
   import { onMount } from "svelte";
   import { wallet, user } from "../../utils/stores/user";
+import Notifier from "../../components/common/Notifier.svelte";
 
   let email = "",
     phone = "",
@@ -17,8 +18,8 @@
     calc_account = "",
     corr_account = "",
     showDialog = false,
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   $: kosh = { ...$wallet };
 
@@ -91,9 +92,9 @@
 
     if (responseWallet.ok && responseAcc.ok) {
       showDialog = false;
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -101,6 +102,7 @@
 <div class="h-full w-full flex flex-col justify-between py-6">
   <div class="px-6">
     <Heading heading="Региональный представитель" />
+    <!-- If rp present -->
     <Person />
     <Heading heading="Общие данные" />
     <div class="mt-4 flex">
@@ -108,6 +110,7 @@
         <TextField
           label="Эл. почта"
           type="email"
+          required
           outlined
           color="secondary"
           class="mr-4"
@@ -118,6 +121,7 @@
           label="Телефон"
           type="telephone"
           outlined
+          required
           color="secondary"
           class="flex-grow"
           bind:value={phone} />
@@ -157,10 +161,4 @@
   </div>
 </Dialog>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Данные успешно обновлены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно обновлены" />

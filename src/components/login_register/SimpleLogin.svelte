@@ -1,15 +1,19 @@
 <script>
-  import { TextField, Button } from "smelte";
+  import { TextField, Button, Snackbar } from "smelte";
   import { login } from "../../utils/helpers/login";
   import { viewStates } from "../../utils/stores/viewStates";
   import { user } from "../../utils/stores/user";
+import Notifier from "../common/Notifier.svelte";
 
   let data = {
     username: "",
     password: "",
   };
 
+  let showFailure = false;
+
   const loginAttempt = async () => {
+
     const { success } = await login(data);
     if (success) {
       data.username = "";
@@ -23,6 +27,8 @@
       } else {
         $viewStates = "active";
       }
+    } else {
+      showFailure = true;
     }
   };
 
@@ -31,7 +37,7 @@
   };
 </script>
 
-<style>
+<style> 
   .login {
     height: 580px;
     width: 944px;
@@ -71,7 +77,7 @@
   }
 </style>
 
-<div class="login">
+<form class="login" on:submit|preventDefault={loginAttempt}>
   <div class="side">
     <div class="left justify-end self-center p-6">
       <h4 class="mb-2">Заголовок</h4>
@@ -93,11 +99,14 @@
         label="Логин"
         outlined
         color="secondary"
+        type="email"
+        required
         bind:value={data.username} />
       <TextField
         label="Пароль"
         type="password"
         outlined
+        required
         color="secondary"
         bind:value={data.password} />
       <p class="text-sm">
@@ -106,7 +115,9 @@
           class="text-primary-500 underline cursor-pointer"
           on:click={gotoRegister}>здесь</span>
       </p>
-      <Button block color="primary" on:click={loginAttempt}>Войти</Button>
+        <Button block color="primary">Войти</Button>
     </div>
   </div>
-</div>
+</form>
+
+<Notifier {showFailure} textFailure="Введите верный пароль или логин" />

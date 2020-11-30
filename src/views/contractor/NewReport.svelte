@@ -8,6 +8,7 @@
   import { token } from "../../utils/stores/token";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { Snackbar } from "smelte";
+import Notifier from "../../components/common/Notifier.svelte";
   let fotka,
     imageF,
     imageS,
@@ -17,8 +18,8 @@
     fotoInput,
     readerS,
     scanInput;
-  let showSnackbarFailure = false,
-    showSnackbarSuccess = false;
+  let showFailure = false,
+    showSuccess = false;
   let text = "";
   const onFotoSelected = (e) => {
     imageF = e.target.files[0];
@@ -63,10 +64,10 @@
       }
     );
     if(response.ok) {
-      showSnackbarSuccess = true;
+      showSuccess = true;
       $activeHeader = "Заявки на модерации";
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -121,6 +122,7 @@
     <TextField
       label="Сообщение"
       outlined
+      required
       color="secondary"
       textarea
       rows="5"
@@ -129,10 +131,4 @@
   <SaveClose positive={sendReport} />
 </div>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Данные успешно загружены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно загружены" />

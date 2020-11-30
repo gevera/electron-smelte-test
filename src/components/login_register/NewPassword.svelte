@@ -4,12 +4,12 @@
   import { viewStates } from "../../utils/stores/viewStates";
   import { token } from "../../utils/stores/token";
   import { user } from "../../utils/stores/user";
-  import { Snackbar } from "smelte";
+  import Notifier from "../common/Notifier.svelte";
 
   let password = "",
     password_check = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   const updatePassword = async () => {
     const response = await fetch(
@@ -20,20 +20,18 @@
           "content-type": "application/json",
           Authorization: `token ${$token}`,
         },
-        body: JSON.stringify({password}),
+        body: JSON.stringify({ password }),
       }
     );
 
     if (response.ok) {
-      showSnackbarSuccess = true;
+      showSuccess = true;
       localStorage.setItem("update_password", false);
       $viewStates = "active";
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
-  $: console.log($user);
-  $: console.log($token);
   $: password_ok = password == password_check;
   $: disabled = password_ok && password.length > 2;
 </script>
@@ -46,30 +44,29 @@
   }
 </style>
 
-<div class="new_password p-6 flex flex-col flex-between rounded-md shadow-md">
+<form
+  class="new_password p-6 flex flex-col flex-between rounded-md shadow-md"
+  on:submit|preventDefault={updatePassword}>
   <h5 class="text-center  my-2">Введите новый пароль</h5>
   <TextField
     label="Пароль"
     type="password"
     outlined
+    required
     color="secondary"
     bind:value={password} />
   <TextField
     label="Подтвердите пароль"
     type="password"
     outlined
+    required
     color="secondary"
     error={!password_ok}
     bind:value={password_check} />
-  <Button block class="mt-0" on:click={updatePassword} disabled={!disabled}>
-    Подтвердить
-  </Button>
-</div>
+  <Button block class="mt-0" disabled={!disabled}>Подтвердить</Button>
+</form>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={3000}>
-  <div>Вы успешно обновили пароль</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={5000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Вы успешно обновили пароль" />

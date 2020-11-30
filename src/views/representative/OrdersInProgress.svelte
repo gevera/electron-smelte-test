@@ -6,6 +6,7 @@
   import { orderID } from "../../utils/stores/order";
   import Submenu from "../../components/common/Submenu.svelte";
   import { activeHeader } from "../../utils/stores/activeHeader";
+  import NoData from "../../components/common/NoData.svelte";
 
   let dataFetched = [];
   let city = "";
@@ -37,27 +38,14 @@
       ...d,
       city: [...$cities].filter((c) => c.id == d.city)[0].name,
     }))
-    .filter((o) => o.status == 3);
+    .filter((o) => o.status == 2);
 
   $: itemsCity = [...$cities].map((r) => ({ value: r.id, text: r.name }));
-
-  $: console.log(data);
 </script>
-
-<style>
-  .big {
-    font-size: 48px;
-  }
-</style>
 
 <div class="py-6 h-full w-full">
   {#if data.length == 0}
-    <div class="h-full grid place-items-center">
-      <div class="flex flex-col items-center">
-        <span class="material-icons big text-dark-500">work_outline</span>
-        <h5 class="text-dark-500 font-thin">Заявок в работе пока нет</h5>
-      </div>
-    </div>
+    <NoData icon="work_outline" text="Заявок в работе пока нет" />
   {:else}
     <ul>
       {#each data as item, i (item.id)}

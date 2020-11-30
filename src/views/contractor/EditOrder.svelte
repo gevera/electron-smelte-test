@@ -5,7 +5,9 @@
   import DataZakazchik from "../../components/common/DataZakaz.svelte";
 </script>
 
-<div class="h-full w-full flex flex-col justify-between py-6">
+<form
+  class="h-full w-full flex flex-col justify-between py-6"
+  on:submit|preventDefault={() => console.log('Submit')}>
   <div class="">
     <div class="flex items-center justify-between mb-2 px-6">
       <h5 class="text-dark-500"># 45893465</h5>
@@ -30,4 +32,4 @@
   <div class="flex justify-end px-6">
     <Button>Отправить</Button>
   </div>
-</div>
+</form>

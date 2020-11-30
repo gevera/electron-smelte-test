@@ -7,7 +7,9 @@
   import { regions, cities } from "../../utils/stores/regions";
   import { onMount } from "svelte";
   import SaveClose from "../../components/common/SaveClose.svelte";
+  import Notifier from "../../components/common/Notifier.svelte";
 
+  // TODO not updating error 500 created_by
   let order = {
     customer: "",
     customer_number: "",
@@ -18,9 +20,11 @@
     order_source: "",
   };
 
+  let orderFetched = {};
+
   let pk = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   const URL = `${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`;
 
@@ -30,10 +34,10 @@
         Authorization: `token ${$token}`,
       },
     });
-    const data = await response.json();
-    console.log(data);
-    pk = data.pk;
-    return data;
+    orderFetched = await response.json();
+    console.log(orderFetched);
+    pk = orderFetched.pk;
+    return orderFetched;
   };
 
   onMount(async () => {
@@ -56,7 +60,7 @@
       region,
       order_type,
       order_source,
-      created_by
+      created_by,
     };
   });
   const saveEdit = async () => {
@@ -64,14 +68,14 @@
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        "Authorization": `token ${$token}`,
+        Authorization: `token ${$token}`,
       },
       body: JSON.stringify(order),
     });
     if (response.ok) {
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 
@@ -86,30 +90,35 @@
     <TextField
       label="Имя клиента"
       outlined
+      required
       color="secondary"
       prepend="person"
       bind:value={order.customer} />
     <TextField
       label="Телефон клиента"
       outlined
+      required
       color="secondary"
       prepend="call"
       bind:value={order.customer_number} />
     <TextField
       label="Адрес клиента"
       outlined
+      required
       color="secondary"
       prepend="person_pin_circle"
       bind:value={order.customer_address} />
     <Select
       bind:value={order.region}
       outlined
+      required
       autocomplete
       label="Регион"
       items={itemsRegion} />
     <Select
       bind:value={order.city}
       outlined
+      required
       autocomplete
       label="Город"
       items={itemsCity} />
@@ -117,10 +126,4 @@
   <SaveClose positive={saveEdit} />
 </div>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={5000}>
-  <div>Данные успешно обновлены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={5000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно обновлены" />

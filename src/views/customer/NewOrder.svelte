@@ -4,14 +4,15 @@
   import { token } from "../../utils/stores/token";
   import { user } from "../../utils/stores/user";
   import { tempConfig } from "../../utils/stores/tempConfigs";
+  import Notifier from "../../components/common/Notifier.svelte";
 
   let customer_number = "",
     customer_address = "",
     customer = "",
     city = "",
     region = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   $: itemsRegion = [...$regions].map((r) => ({ value: r.id, text: r.name }));
   $: itemsCity = [...$cities].map((r) => ({ value: r.id, text: r.name }));
@@ -39,35 +40,40 @@
     if (response.ok) {
       const data = await response.json();
       console.log(data);
-      showSnackbarSuccess = true;
+      showSuccess = true;
       customer = "";
       customer_address = "";
       customer_number = "";
       city = "";
       region = "";
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
 
-<div class="w-full h-full p-8 flex flex-col justify-between">
+<form
+  class="w-full h-full p-8 flex flex-col justify-between"
+  on:submit|preventDefault={sendOrder}>
   <div class="">
     <TextField
       label="Имя клиента"
       outlined
+      required
       color="secondary"
       bind:value={customer}
       prepend="person" />
     <TextField
       label="Телефон клиента"
       outlined
+      required
       color="secondary"
       bind:value={customer_number}
       prepend="call" />
     <TextField
       label="Адрес клиента"
       outlined
+      required
       color="secondary"
       bind:value={customer_address}
       prepend="person_pin_circle" />
@@ -80,6 +86,7 @@
     <Select
       bind:value={region}
       outlined
+      required
       autocomplete
       label="Регион"
       items={itemsRegion} />
@@ -87,13 +94,11 @@
     <p class="text-dark-500">Итого: {price} рублей</p>
   </div>
   <div class="flex justify-end">
-    <Button on:click={sendOrder}>Отправить</Button>
+    <Button>Отправить</Button>
   </div>
-</div>
+</form>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Новая заявка успешно создана</div>
-</Snackbar>
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Новая заявка успешно создана" />

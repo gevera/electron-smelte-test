@@ -49,7 +49,8 @@
 
   getData();
 
-  $: data = dataFetched.map((rp) => ({
+  $: data = dataFetched
+  .map((rp) => ({
     ...rp,
     user: {
       ...rp.user,

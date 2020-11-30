@@ -7,6 +7,7 @@
   import SaveClose from "../../components/common/SaveClose.svelte";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { onMount } from "svelte";
+import Notifier from "../../components/common/Notifier.svelte";
   let region = {
       name: "",
       order_site_price: "",
@@ -25,8 +26,8 @@
       commission_customer: "",
       commission_executor: "",
     },
-    showSnackbarFailure = false,
-    showSnackbarSuccess = false;
+    showFailure = false,
+    showSuccess = false;
 
   const getRegion = async () => {
     const response = await fetch(
@@ -59,9 +60,9 @@
       }
     );
     if (response.ok) {
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -156,10 +157,4 @@
     negative={() => ($activeHeader = 'Таблица регионов')} />
 </div>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Данные успешно обновлены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно обновлены" />

@@ -7,6 +7,7 @@
   import Submenu from "../../components/common/Submenu.svelte";
   import { orderID } from "../../utils/stores/order";
   import { activeHeader } from "../../utils/stores/activeHeader";
+  import NoData from "../../components/common/NoData.svelte";
 
   let dataFetched = [],
     loading = false,
@@ -54,9 +55,6 @@
     $orderID = id;
     $activeHeader = "Проверка отчета по заявке";
   };
-
-  $: console.log(data);
-  $: console.log(selected);
 </script>
 
 <style>
@@ -67,12 +65,7 @@
 
 <div class="py-6 h-full">
   {#if data.length == 0}
-    <div class="h-full grid place-items-center">
-      <div class="flex flex-col items-center">
-        <span class="material-icons big text-dark-500">find_in_page</span>
-        <h5 class="text-dark-500 font-thin">Выполненных заявок пока нет</h5>
-      </div>
-    </div>
+    <NoData icon="find_in_page" text="Выполненных заявок пока нет" />
   {:else}
     <div class="flex px-6 items-center">
       <p class="text-dark-500 mr-2">Город</p>

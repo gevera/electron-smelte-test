@@ -7,18 +7,22 @@
   import { token } from "../../utils/stores/token";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { onMount } from "svelte";
-  // TODO Fix updating meial or phone
-  let phone = "",
-    email = "",
-    password = "",
+import Notifier from "../../components/common/Notifier.svelte";
+
+  let userUpdated = {
+      phone: "",
+      email: "",
+      password: "",
+      region: "",
+    },
     inn = "",
     bik = "",
     bank_name = "",
     calc_account = "",
     corr_account = "",
     showDialog = false,
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   const getWallet = async () => {
     const response = await fetch(
@@ -37,14 +41,15 @@
     const { data } = await getMe($token);
     const walletData = await getWallet();
     $wallet = { ...walletData };
-    console.log(walletData);
+    // console.log(walletData);
     bank_name = walletData.bank_name;
     calc_account = walletData.calc_account;
     corr_account = walletData.corr_account;
     bik = walletData.bik;
     inn = walletData.inn;
-    phone = data[0].user.phone;
-    email = data[0].user.email;
+    userUpdated.phone = data[0].user.phone;
+    userUpdated.email = data[0].user.email;
+    userUpdated.region = data[0].user.region;
   });
   const updateAccount = async () => {
     const responseWallet = await fetch(
@@ -58,37 +63,42 @@
         body: JSON.stringify({
           ...kosh,
           bik,
+          inn,
           bank_name,
           calc_account,
           corr_account,
         }),
       }
     );
+    const usr = {
+      user: {
+        email: userUpdated.email,
+        phone: userUpdated.phone,
+        region: userUpdated.region,
+        password: userUpdated.password,
+      },
+      first_rp: $user.first_rp,
+      first_name: $user.first_name,
+      last_name: $user.last_name,
+      second_name: $user.second_name,
+    };
     const responseAcc = await fetch(
-      `${$tempConfig.server_URL}${$tempConfig.executor}${$user.user.pk}/`,
+      `${$tempConfig.server_URL}${$tempConfig.rp}${$user.user.pk}/`,
       {
         method: "PUT",
         headers: {
           Authorization: `token ${$token}`,
           "content-type": "application/json",
         },
-        body: JSON.stringify({
-          ...$user,
-          user: {
-            ...$user.user,
-            email,
-            phone,
-            password,
-          },
-        }),
+        body: JSON.stringify(usr),
       }
     );
 
     if (responseWallet.ok && responseAcc.ok) {
       showDialog = false;
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 
@@ -103,14 +113,16 @@
         label="Эл. почта"
         type="email"
         outlined
+        required
         color="secondary"
-        bind:value={email} />
+        bind:value={userUpdated.email} />
       <TextField
         label="Телефон"
         type="telephone"
         outlined
+        required
         color="secondary"
-        bind:value={phone} />
+        bind:value={userUpdated.phone} />
     </div>
     <Heading heading="Платежные реквизиты" />
     <div class="my-4">
@@ -138,7 +150,11 @@
 
 <Dialog bind:value={showDialog}>
   <h5 slot="title" class="text-centered text-dark-500">Подтвердите пароль</h5>
-  <TextField outlined label="Пароль" type="password" bind:value={password} />
+  <TextField
+    outlined
+    label="Пароль"
+    type="password"
+    bind:value={userUpdated.password} />
   <div slot="actions">
     <Button text color="dark" on:click={() => (showDialog = false)}>
       Отменить
@@ -147,10 +163,4 @@
   </div>
 </Dialog>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Данные успешно обновлены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно обновлены"/>

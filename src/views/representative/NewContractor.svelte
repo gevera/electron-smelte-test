@@ -4,6 +4,10 @@
   import { regions } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
   import { tempConfig } from "../../utils/stores/tempConfigs";
+  import { activeHeader } from "../../utils/stores/activeHeader";
+import Notifier from "../../components/common/Notifier.svelte";
+  // TODO go to Tablitza ispolnitelei after created succesffuly
+
   let region = "",
     phone = "",
     email = "",
@@ -14,8 +18,8 @@
     passport_data = "",
     when_issued = "",
     password = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   let imageF,
     imageP,
@@ -91,9 +95,10 @@
       }
     );
     if (response.ok) {
-      showSnackbarSuccess = true;
+      $activeHeader = "Таблица исполнителей";
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 
@@ -111,7 +116,7 @@
             phone,
             region,
             password,
-            email
+            email,
           },
           first_name,
           last_name,
@@ -125,12 +130,22 @@
       await sendPassport(data.user.pk);
     }
   };
+
+  let activateSend = false;
+
+  $: if (fotka && password && registration) {
+    activateSend = true;
+  }
 </script>
 
-<div class="w-full h-full p-8 flex flex-col justify-between">
+<form class="w-full h-full p-8 flex flex-col justify-between"
+on:submit|preventDefault={createContractor}>
   <div class="">
+    
     <Heading heading="Фото" addClass="mb-2" />
+
     <div class="flex h-48 px-6 items-center mb-4">
+
       <div
         class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
         id="fot">
@@ -149,6 +164,7 @@
           bind:this={fotoInput} />
         <!-- {#if fotka}<img class="object-contain" src={fotka} alt="fotka" />{/if} -->
       </div>
+
       <div
         class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
         id="reg">
@@ -167,6 +183,7 @@
           bind:this={registrationInput} />
         <!-- {#if passport}<img class="object-contain" src={passport} alt="passport" />{/if} -->
       </div>
+
       <div
         class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
         id="psprt">
@@ -185,55 +202,76 @@
           bind:this={passportInput} />
         <!-- {#if scan}<img class="object-contain" src={scan} alt="scan" />{/if} -->
       </div>
+      
     </div>
+
     <Heading heading="Данные" addClass="mb-4" />
+
     <TextField label="Имя" outlined color="secondary" bind:value={first_name} />
     <TextField
       label="Фамилия"
       outlined
+      required
       color="secondary"
       bind:value={last_name} />
     <TextField
       label="Отчество"
       outlined
+      required
       color="secondary"
       bind:value={second_name} />
     <TextField label="Телефон" outlined color="secondary" bind:value={phone} />
-    <TextField label="Эл. Почта" outlined color="secondary" type="email" bind:value={email} />
     <TextField
-    label="Пароль"
-    type="password"
-    outlined
-    color="secondary"
-    bind:value={password} />
+      label="Эл. Почта"
+      outlined
+      required
+      color="secondary"
+      type="email"
+      bind:value={email} />
+    <TextField
+      label="Пароль"
+      type="password"
+      outlined
+      required
+      color="secondary"
+      bind:value={password} />
     <Select
-    bind:value={region}
-    outlined
-    autocomplete
-    label="Регион"
-    items={itemsRegion} />
-  </div>
-  <Heading heading="Паспортные данные" addClass="mb-4" />
-  <div>
-    <TextField label="Номер паспорта" outlined color="secondary" bind:value={passport_data} />
-    <TextField label="Кем выдан" outlined color="secondary" bind:value={issued_by} />
-    <TextField outlined type="date" color="secondary" bind:value={when_issued} />
-
+      bind:value={region}
+      outlined
+      required
+      autocomplete
+      label="Регион"
+      items={itemsRegion} />
   </div>
 
-  <div class="flex justify-end">
-    <Button
-      class="ml-2"
-      add="shadow-none hover:shadow-md"
-      on:click={createContractor}>
-      Отправить
-    </Button>
-  </div>
-</div>
+      <Heading heading="Паспортные данные" addClass="mb-4" />
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Новый исполнитель успешно добавлен</div>
-</Snackbar>
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+      <div>
+        <TextField
+          label="Номер паспорта"
+          outlined
+          color="secondary"
+          bind:value={passport_data} />
+        <TextField
+          label="Кем выдан"
+          outlined
+          color="secondary"
+          bind:value={issued_by} />
+        <TextField
+          outlined
+          type="date"
+          color="secondary"
+          bind:value={when_issued} />
+      </div>
+
+      <div class="flex justify-end">
+        <Button
+          class="ml-2"
+          disabled={!activateSend}
+          add="shadow-none hover:shadow-md">
+          Отправить
+        </Button>
+      </div>
+</form>
+
+<Notifier {showSuccess} {showFailure} textSuccess="Новый исполнитель успешно добавлен"/>

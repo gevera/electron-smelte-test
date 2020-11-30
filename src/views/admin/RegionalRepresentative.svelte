@@ -3,18 +3,19 @@
   import Heading from "../../components/common/Heading.svelte";
   import { orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
-  import { tempConfig } from "../../utils/stores/tempConfigs"; 
-  import { sidemenu } from "../../utils/stores/sidemenu"; 
+  import { tempConfig } from "../../utils/stores/tempConfigs";
+  import { sidemenu } from "../../utils/stores/sidemenu";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { onMount } from "svelte";
+  import Notifier from "../../components/common/Notifier.svelte";
 
   let showConfirm = false,
     rpID = "",
     backupID = "",
     allRps = [],
     represent = {},
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   const getRp = async () => {
     const response = await fetch(
@@ -80,9 +81,9 @@
       }
     );
     if (response.ok) {
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -106,9 +107,7 @@
         </Button>
       </div>
       <Heading heading="Исполнители" addClass="mb-6" />
-      <Button
-        class="mb-6"
-        on:click={gotoContractors}>
+      <Button class="mb-6" on:click={gotoContractors}>
         Смотреть всех исполнителей
       </Button>
       <Heading heading="Данные" addClass="mb-4" />
@@ -140,10 +139,12 @@
   {/await}
 </div>
 
+<!-- TODO Add form with required fields -->
 <Dialog bind:value={showConfirm}>
   <h5 slot="title" class="text-dark-500">Выберите заменяющего</h5>
   <Select
     outlined
+    required
     color="secondary"
     label="Заменяющий"
     bind:value={backupID}
@@ -156,10 +157,7 @@
   </div>
 </Dialog>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={3000}>
-  <div>Региональный представитель успешно заменён</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={3000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Региональный представитель успешно заменён" />

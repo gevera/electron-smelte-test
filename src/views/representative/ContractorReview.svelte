@@ -5,14 +5,15 @@
   import { token } from "../../utils/stores/token";
   import { regions } from "../../utils/stores/regions";
   import { orderID } from "../../utils/stores/order";
+  import Notifier from "../../components/common/Notifier.svelte";
 
   // TODO Fetch photos add Block functionality GET passport s id
 
   let status = "",
     region = "",
-    showSnackbarSuccess = false,
+    showSuccess = false,
     showSnackbarUnblock = false,
-    showSnackbarFailure = false;
+    showFailure = false;
   let dataFetched;
   async function getData() {
     if (typeof window === "undefined") return;
@@ -46,9 +47,9 @@
     );
     if (response.ok) {
       console.log("Block!");
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
   const unblockContractor = async () => {
@@ -66,7 +67,7 @@
     if (response.ok) {
       showSnackbarUnblock = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -83,7 +84,7 @@
         on:click={blockContractor}>
         Заблокировать
       </Button>
-      {:else}
+    {:else}
       <Button
         text
         icon="block"
@@ -128,12 +129,11 @@
   {/await}
 </div>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={3000}>
-  <div>Исполнители успешно заблокирован</div>
-</Snackbar>
-<Snackbar color="primary" top bind:value={showSnackbarUnblock} timeout={3000}>
-  <div>Исполнители успешно разблокирован</div>
-</Snackbar>
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={3000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Исполнитель успешно заблокирован" />
+
+<Snackbar color="secondary" top bind:value={showSnackbarUnblock} timeout={3000}>
+  <div>Исполнитель успешно разблокирован</div>
 </Snackbar>

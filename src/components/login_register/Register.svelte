@@ -3,6 +3,7 @@
   import { regions } from "../../utils/stores/regions";
   import { viewStates } from "../../utils/stores/viewStates";
   import { tempConfig } from "../../utils/stores/tempConfigs";
+import Notifier from "../common/Notifier.svelte";
 
   let first_name = "",
     last_name = "",
@@ -12,8 +13,8 @@
     password = "",
     password_check = "",
     region = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   // http://81.30.178.216:8000/api/users/customer/ POST
   const registerCustomer = async () => {
@@ -42,10 +43,10 @@
       phone = "";
       password = "";
       password_check = "";
-      showSnackbarSuccess = true;
+      showSuccess = true;
       $viewStates = "login";
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 
@@ -65,7 +66,6 @@
     password_ok &&
     password.length > 2 &&
     region;
-
 </script>
 
 <style>
@@ -76,22 +76,27 @@
   }
 </style>
 
-<div class="register p-4 pt-2 rounded-md shadow-md">
+<form
+  class="register p-4 pt-2 rounded-md shadow-md"
+  on:submit|preventDefault={registerCustomer}>
   <h6 class="text-center">Регистрация</h6>
   <TextField label="Имя" outlined color="secondary" bind:value={first_name} />
   <TextField
     label="Фамилия"
     outlined
+    required
     color="secondary"
     bind:value={last_name} />
   <TextField
     label="Отчество"
     outlined
+    required
     color="secondary"
     bind:value={second_name} />
   <TextField
     label="Эл. Почта"
     type="email"
+    required
     outlined
     color="secondary"
     bind:value={email} />
@@ -99,19 +104,21 @@
   <TextField
     label="Пароль"
     type="password"
+    required
     outlined
     color="secondary"
     bind:value={password} />
   <TextField
     label="Подтвердите пароль"
     type="password"
+    required
     outlined
     color="secondary"
     error={!password_ok}
     bind:value={password_check} />
   <Select bind:value={region} outlined autocomplete label="Регион" {items} />
 
-  <Button block class="mt-0" disabled={!disabled} on:click={registerCustomer}>Войти</Button>
+  <Button block class="mt-0" disabled={!disabled}>Войти</Button>
   <p class="text-xs mt-2">
     Нажимая кнопку "Войти" вы подтверждаете своё согласие с
     <a href="/" class="text-primary-500 underline">офертой</a>
@@ -120,12 +127,6 @@
       on:click={gotoLogin}
       class="text-primary-500 underline cursor-pointer">по ссылке</span>
   </p>
-</div>
+</form>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Вы успешно зарегистрировались</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
- <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Вы успешно зарегистрировались" />

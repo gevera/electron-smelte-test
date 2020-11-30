@@ -2,6 +2,8 @@
   import { Button } from "smelte";
   export let positive;
   export let negative;
+  export let wordPositive = "Сохранить";
+  export let wordNegative = "Отмена";
 </script>
 
 <div class="flex justify-end px-6">
@@ -13,10 +15,10 @@
       class="mx-2"
       add="shadow hover:shadow-md"
       on:click={negative}>
-      Отмена
+      {wordNegative}
     </Button>
     <Button class="ml-2" add="shadow-none hover:shadow-md" on:click={positive}>
-      Сохранить
+      {wordPositive}
     </Button>
   </div>
 </div>

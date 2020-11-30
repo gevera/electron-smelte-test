@@ -7,6 +7,7 @@
   import Submenu from "../../components/common/Submenu.svelte";
   import { orderID } from "../../utils/stores/order";
   import { activeHeader } from "../../utils/stores/activeHeader";
+  import NoData from "../../components/common/NoData.svelte";
 
   let dataFetched = [];
   let loading = false;
@@ -15,7 +16,7 @@
     if (typeof window === "undefined") return;
     loading = true;
     const res = await fetch(
-      `${$tempConfig.server_URL}${$tempConfig.orderList}`,
+      `${$tempConfig.server_URL}${$tempConfig.orderList}?status=3&approve_status=2`,
       {
         headers: {
           Authorization: `token ${$token}`,
@@ -37,7 +38,8 @@
       ...d,
       city: [...$cities].filter((c) => c.id == d.city)[0].name,
     }))
-    .filter((o) => o.status == 2);
+    // .filter((o) => o.approve_status == 2)
+    // .filter((o) => o.status == 3)
 
   let open = false;
   let selected = "";
@@ -47,37 +49,41 @@
     $activeHeader = "Проверка отчета по заявке";
   };
 
-  $: console.log(data);
+  $: console.table(data);
   $: console.log(selected);
 </script>
 
-<div class="py-6">
-  <ul>
-    {#each data as item, i (item.id)}
-      <li
-        class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
-        class:bg-gray-100={i % 2}>
-        <div class="w-3/12 border-r pl-6 text-dark-500">{item.customer}</div>
-        <div class="w-2/12 border-r pl-4 text-dark-500">
-          {item.customer_number}
-        </div>
-        <div class="w-5/12 border-r pl-4 text-dark-500">
-          г.
-          {item.city}
-          {item.customer_address}
-        </div>
-        <div class="w-2/12 px-6 flex justify-start">
-          <Button
-            text
-            light
-            flat
-            color="dark"
-            icon="visibility"
-            on:click={() => viewOrder(item.id)} />
-        </div>
-      </li>
-    {/each}
-  </ul>
+<div class="py-6 h-full">
+  {#if data.length == 0}
+    <NoData />
+  {:else}
+    <ul>
+      {#each data as item, i (item.id)}
+        <li
+          class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
+          class:bg-gray-100={i % 2}>
+          <div class="w-3/12 border-r pl-6 text-dark-500">{item.customer}</div>
+          <div class="w-2/12 border-r pl-4 text-dark-500">
+            {item.customer_number}
+          </div>
+          <div class="w-5/12 border-r pl-4 text-dark-500">
+            г.
+            {item.city}
+            {item.customer_address}
+          </div>
+          <div class="w-2/12 px-6 flex justify-start">
+            <Button
+              text
+              light
+              flat
+              color="dark"
+              icon="visibility"
+              on:click={() => viewOrder(item.id)} />
+          </div>
+        </li>
+      {/each}
+    </ul>
+  {/if}
   <div />
   <!-- <List items={data} dense>
     <li slot="item" let:item>

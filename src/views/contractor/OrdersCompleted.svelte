@@ -37,10 +37,6 @@
 
   $: itemsCity = [...$cities].map((r) => ({ value: r.id, text: r.name }));
 
-
-
-
-  $: console.log(data);
 </script>
 
 <style>

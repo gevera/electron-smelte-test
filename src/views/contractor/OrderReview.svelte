@@ -1,12 +1,12 @@
 <script>
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { status } from "../../utils/stores/order";
-  import { Snackbar } from "smelte";
   import DataZakaz from "../../components/common/DataZakaz.svelte";
   import UpdateReport from "../../components/common/UpdateReport.svelte";
+  import Notifier from "../../components/common/Notifier.svelte";
 
-  let showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+  let showSuccess = false,
+    showFailure = false;
 
   const gotoAddReport = () => {
     $activeHeader = "Новый отчет";
@@ -32,10 +32,4 @@
   {/if}
 </div>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Данные успешно загружены</div>
-</Snackbar>
-
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Данные успешно загружены" />

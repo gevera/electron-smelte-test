@@ -6,6 +6,7 @@
   import { token } from "../../utils/stores/token";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { activeHeader } from "../../utils/stores/activeHeader";
+  import Notifier from "../../components/common/Notifier.svelte";
   let region = "",
     phone = "",
     email = "",
@@ -16,8 +17,8 @@
     passport_data = "",
     when_issued = "",
     password = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   let imageF,
     imageP,
@@ -93,44 +94,50 @@
       }
     );
     if (response.ok) {
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 
   const createRp = async () => {
+    const newRp = {
+      user: {
+        phone,
+        region,
+        password,
+        email,
+      },
+      first_name,
+      last_name,
+      second_name,
+    };
+    console.log(newRp);
     const response = await fetch(`${$tempConfig.server_URL}${$tempConfig.rp}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
         Authorization: `token ${$token}`,
       },
-      body: JSON.stringify({
-        user: {
-          phone,
-          region,
-          password,
-          email,
-        },
-        first_name,
-        last_name,
-        second_name,
-      }),
+      body: JSON.stringify(newRp),
     });
     if (response.ok) {
       const data = await response.json();
       console.log(data);
-      showSnackbarSuccess = true;
+      showSuccess = true;
       $activeHeader = "Таблица региональный представитель";
       // await sendPassport(data.user.pk);
     } else {
-      showSnackbarFailure = false;
+      showFailure = false;
     }
   };
+
+  $: console.log(`REGION ===>>> ${region}`);
 </script>
 
-<div class="w-full h-full p-8 flex flex-col justify-between">
+<form
+  class="w-full h-full p-8 flex flex-col justify-between"
+  on:submit|preventDefault={createRp}>
   <div class="">
     <Heading heading="Фото" addClass="mb-2" />
     <div class="flex h-48 px-6 items-center mb-4">
@@ -190,33 +197,48 @@
       </div>
     </div>
     <Heading heading="Данные" addClass="mb-4" />
-    <TextField label="Имя" outlined color="secondary" bind:value={first_name} />
+    <TextField
+      label="Имя"
+      outlined
+      required
+      color="secondary"
+      bind:value={first_name} />
     <TextField
       label="Фамилия"
       outlined
+      required
       color="secondary"
       bind:value={last_name} />
     <TextField
       label="Отчество"
       outlined
+      required
       color="secondary"
       bind:value={second_name} />
-    <TextField label="Телефон" outlined color="secondary" bind:value={phone} />
+    <TextField
+      label="Телефон"
+      outlined
+      required
+      color="secondary"
+      bind:value={phone} />
     <TextField
       label="Эл. Почта"
       outlined
+      required
       color="secondary"
       type="email"
       bind:value={email} />
     <TextField
       label="Пароль"
       type="password"
+      required
       outlined
       color="secondary"
       bind:value={password} />
     <Select
       bind:value={region}
       outlined
+      required
       autocomplete
       label="Регион"
       items={itemsRegion} />
@@ -230,15 +252,11 @@
   </div> -->
 
   <div class="flex justify-end">
-    <Button class="ml-2" add="shadow-none hover:shadow-md" on:click={createRp}>
-      Отправить
-    </Button>
+    <Button class="ml-2" add="shadow-none hover:shadow-md">Отправить</Button>
   </div>
-</div>
+</form>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Новый региональный успешно создан</div>
-</Snackbar>
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Новый региональный успешно создан" />

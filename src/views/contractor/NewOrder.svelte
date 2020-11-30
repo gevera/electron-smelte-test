@@ -3,6 +3,7 @@
   import { cities, regions } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
   import { tempConfig } from "../../utils/stores/tempConfigs";
+  import Notifier from "../../components/common/Notifier.svelte";
 
   let customer_number = "",
     customer_address = "",
@@ -10,8 +11,8 @@
     city = "",
     region = "",
     order_type = "",
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
 
   $: itemsRegion = [...$regions].map((r) => ({ value: r.id, text: r.name }));
   $: itemsCity = [...$cities].map((r) => ({ value: r.id, text: r.name }));
@@ -35,14 +36,14 @@
     if (response.ok) {
       const data = await response.json();
       console.log(data);
-      showSnackbarSuccess = true;
+      showSuccess = true;
       customer = "";
       customer_address = "";
       customer_number = "";
       city = "";
       region = "";
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 
@@ -58,54 +59,60 @@
   ];
 </script>
 
-<div class="w-full h-full p-8 flex flex-col justify-between">
+<form
+  class="w-full h-full p-8 flex flex-col justify-between"
+  on:submit|preventDefault={newOrder}>
   <div class="">
     <TextField
       label="Имя клиента"
       outlined
+      required
       color="secondary"
       prepend="person"
       bind:value={customer} />
     <TextField
       label="Телефон клиента"
       outlined
+      required
       color="secondary"
       prepend="call"
       bind:value={customer_number} />
     <TextField
       label="Адрес клиента"
       outlined
+      required
       color="secondary"
       prepend="person_pin_circle"
       bind:value={customer_address} />
     <Select
       bind:value={region}
       outlined
+      required
       autocomplete
       label="Регион"
       items={itemsRegion} />
     <Select
       bind:value={city}
       outlined
+      required
       autocomplete
       label="Город"
       items={itemsCity} />
     <Select
       label="Тип оплаты"
       outlined
+      required
       bind:value={order_type}
       color="secondary"
       class="w-1/2"
       {items} />
   </div>
   <div class="flex justify-end">
-    <Button on:click={newOrder}>Отправить</Button>
+    <Button>Отправить</Button>
   </div>
-</div>
+</form>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Новая заявка успешно создана</div>
-</Snackbar>
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Новая заявка успешно создана" />

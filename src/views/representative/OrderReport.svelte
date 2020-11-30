@@ -1,5 +1,5 @@
 <script>
-  import { Button, Dialog, TextField, Snackbar } from "smelte";
+  import { Button, Dialog, TextField } from "smelte";
   import DataZakaz from "../../components/common/DataZakaz.svelte";
   import Heading from "../../components/common/Heading.svelte";
   import Person from "../../components/common/Person.svelte";
@@ -7,14 +7,16 @@
   import { orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
   import { tempConfig } from "../../utils/stores/tempConfigs";
+import Notifier from "../../components/common/Notifier.svelte";
 
-  // TODO Fix error with detail
+  // TODO fix status not changing
+  // get data of customer & get data of executor
   
   let confirmStop = false,
     rejectReason = "",
     showReject = true,
-    showSnackbarSuccess = false,
-    showSnackbarFailure = false;
+    showSuccess = false,
+    showFailure = false;
   const sendReject = async () => {
     const response = await fetch(
       `${$tempConfig.server_URL}${$tempConfig.orderDecline}${$orderID}/`,
@@ -31,9 +33,9 @@
       console.log(response);
       confirmStop = false;
       showReject = false;
-      showSnackbarSuccess = true;
+      showSuccess = true;
     } else {
-      showSnackbarFailure = true;
+      showFailure = true;
     }
   };
 </script>
@@ -90,7 +92,8 @@
       </p>
     </div>
   </div>
-  <SaveClose />
+  <!-- Fix to 'Prinyati' add function to accept review PUT empty body -->
+  <SaveClose wordPositive="Принять"/>
 </div>
 
 <Dialog bind:value={confirmStop}>
@@ -110,9 +113,4 @@
   </div>
 </Dialog>
 
-<Snackbar color="primary" top bind:value={showSnackbarSuccess} timeout={2000}>
-  <div>Отчет был успешно отклонен</div>
-</Snackbar>
-<Snackbar color="error" top bind:value={showSnackbarFailure} timeout={2000}>
-  <div>Произошла ошибка. Попробуйте ещё раз позже</div>
-</Snackbar>
+<Notifier {showSuccess} {showFailure} textSuccess="Отчет был успешно отклонен"/>
