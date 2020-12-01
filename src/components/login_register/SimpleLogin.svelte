@@ -13,8 +13,10 @@ import Notifier from "../common/Notifier.svelte";
   let showFailure = false;
 
   const loginAttempt = async () => {
+    showFailure = false;
 
     const { success } = await login(data);
+
     if (success) {
       data.username = "";
       data.password = "";

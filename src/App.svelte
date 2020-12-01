@@ -1,10 +1,8 @@
 <script>
   // TODO
   
-  // 1. Нужно будет валидацию на фронте добавить, required, email
   // 2. Вывод ошибок валидации (хотя бы под формой) и что сервер отвечает, если ошибка (где это возможно реализовать)
   // 3. Маски для input (phone, email)
-  // 4. Кнопку выхода (у меня в программе есть)
   // 5. В сайдбаре после редиректа активный элемент не меняется (не так важно, но в финале нужно будет)
   // 6. Удаление картинки, кнопка всплывает при наведении / Add delete icon/button on hover when photo is added
   // 7. Элемент Уведомления нужно сделать (откуда брать и как работать с API подскажу, в Figma я оставил комментарий)
@@ -14,7 +12,6 @@
   // 11. Fix Tables
   // 12. Fix Photo Upload and Download
   // 13. Fix height and dimensions of app
-  // 15. add maximize button electron
 
   import "smelte/src/tailwind.css";
   import Canvas from "./components/common/Canvas.svelte";

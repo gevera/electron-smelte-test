@@ -1,14 +1,10 @@
 <script>
-  import { Button, Chip } from "smelte";
-  // import { user } from "../../utils/stores/user";
+  import { Button } from "smelte";
   import { regions } from "../../utils/stores/regions";
   import { activeHeader } from "../../utils/stores/activeHeader";
-  import { viewStates } from "../../utils/stores/viewStates";
-  import { onMount } from "svelte";
+
 
   export let user;
-
-  // onMount(() => console.log("HEADER MOUNTED!"));
 
   const openAccountSettings = () => {
     if (user.user.groups == 2 || user.user.groups == 3) {
@@ -16,12 +12,6 @@
     } else if (user.user.groups == 4) {
       $activeHeader = "Редактирование аккаунта";
     }
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("update_password");
-    $viewStates = "login";
   };
 
   $: region = $regions.filter((r) => r.id == user.user.region)[0].name;
@@ -55,10 +45,9 @@
         </p>
       </div>
       <img
-        class="rounded-full border-2 border-primary-500 h-16 w-16 cursor-pointer"
+        class="rounded-full border-2 border-primary-500 h-16 w-16"
         src="./images/avatar.jpeg"
-        alt="avatar"
-        on:dblclick={logout} />
+        alt="avatar"/>
     </div>
   </div>
 </div>
