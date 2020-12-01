@@ -44,8 +44,10 @@
   }
 </style>
 
+<div class="h-screen flex flex-col items-center justify-center">
+
 <form
-  class="new_password p-6 flex flex-col flex-between rounded-md shadow-md"
+  class="max-w-screen-lg max-h-screen-md new_password p-6 flex flex-col flex-between rounded-md shadow-md"
   on:submit|preventDefault={updatePassword}>
   <h5 class="text-center  my-2">Введите новый пароль</h5>
   <TextField
@@ -65,6 +67,8 @@
     bind:value={password_check} />
   <Button block class="mt-0" disabled={!disabled}>Подтвердить</Button>
 </form>
+</div>
+
 
 <Notifier
   {showSuccess}

@@ -25,19 +25,19 @@
 </script>
 
 <style>
-  .back {
-    background-color: #e5e5e5;
-  }
+
 </style>
 
 {#await fetchMe()}
   <h4>Loading</h4>
 {:then data}
-  <div class="h-screen w-screen bg-white flex">
-    <div class="flex-1 back">
+  <div class="bg-white flex h-screen w-screen">
+    <div class="bg-dark-500 w-64">
       <Sidebar user={data}/>
     </div>
-    <Action user={data}/>
+    <div class="w-full max-h-screen-md overflow-y-scroll">
+      <Action user={data}/>
+    </div>
   </div>
 {:catch error}
   {error}

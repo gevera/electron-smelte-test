@@ -68,19 +68,15 @@ import Notifier from "../common/Notifier.svelte";
     region;
 </script>
 
-<style>
-  .register {
-    height: 768px;
-    width: 400px;
-    background: #ffffff;
-  }
-</style>
+
+
+<div class="h-screen flex flex-col items-center justify-center">
 
 <form
-  class="register p-4 pt-2 rounded-md shadow-md"
+  class=" max-w-screen-lg max-h-screen-md p-8 pt-2 rounded-md shadow-md"
   on:submit|preventDefault={registerCustomer}>
-  <h6 class="text-center">Регистрация</h6>
-  <TextField label="Имя" outlined color="secondary" bind:value={first_name} />
+  <h6 class="text-center text-dark-500">Регистрация</h6>
+  <TextField label="Имя" outlined required color="secondary" bind:value={first_name} />
   <TextField
     label="Фамилия"
     outlined
@@ -90,7 +86,6 @@ import Notifier from "../common/Notifier.svelte";
   <TextField
     label="Отчество"
     outlined
-    required
     color="secondary"
     bind:value={second_name} />
   <TextField
@@ -118,7 +113,7 @@ import Notifier from "../common/Notifier.svelte";
     bind:value={password_check} />
   <Select bind:value={region} outlined autocomplete label="Регион" {items} />
 
-  <Button block class="mt-0" disabled={!disabled}>Войти</Button>
+  <Button block class="mt-0" disabled={!disabled}>Зарегистрироватся</Button>
   <p class="text-xs mt-2">
     Нажимая кнопку "Войти" вы подтверждаете своё согласие с
     <a href="/" class="text-primary-500 underline">офертой</a>
@@ -128,5 +123,8 @@ import Notifier from "../common/Notifier.svelte";
       class="text-primary-500 underline cursor-pointer">по ссылке</span>
   </p>
 </form>
+
+</div>
+
 
 <Notifier {showSuccess} {showFailure} textSuccess="Вы успешно зарегистрировались" />

@@ -79,11 +79,12 @@ import Notifier from "../common/Notifier.svelte";
   }
 </style>
 
-<form class="login" on:submit|preventDefault={loginAttempt}>
-  <div class="side">
-    <div class="left justify-end self-center p-6">
-      <h4 class="mb-2">Заголовок</h4>
-      <p class="text-sm">
+<form class="login p-24 flex flex-col justify-center items-center h-screen" on:submit|preventDefault={loginAttempt}>
+  <div class="flex max-w-screen-lg max-h-screen-md shadow-lg p-16 items-start">
+  <div class="hidden lg:block lg:w-1/2">
+    <div class="mr-4">
+      <h4 class="mb-2 text-dark-500">Заголовок</h4>
+      <p class="text-sm ">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci quia
         maiores dignissimos aperiam aspernatur impedit ratione hic, corrupti
         mollitia? Facilis nesciunt libero maxime quo repudiandae accusamus modi
@@ -94,8 +95,8 @@ import Notifier from "../common/Notifier.svelte";
       </p>
     </div>
   </div>
-  <div class="side">
-    <div class="right">
+  <div class="w-full lg:w-1/2">
+    <div class="ml-4">
       <h4 class="text-center mb-1 text-secondary-500">Вход</h4>
       <TextField
         label="Логин"
@@ -111,7 +112,7 @@ import Notifier from "../common/Notifier.svelte";
         required
         color="secondary"
         bind:value={data.password} />
-      <p class="text-sm">
+      <p class="text-sm mb-2">
         Нет аккаунта? Создайте его
         <span
           class="text-primary-500 underline cursor-pointer"
@@ -119,6 +120,7 @@ import Notifier from "../common/Notifier.svelte";
       </p>
         <Button block color="primary">Войти</Button>
     </div>
+  </div>
   </div>
 </form>
 

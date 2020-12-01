@@ -38,8 +38,8 @@
       ...d,
       city: [...$cities].filter((c) => c.id == d.city)[0].name,
     }))
-    // .filter((o) => o.approve_status == 2)
-    // .filter((o) => o.status == 3)
+    .filter((o) => o.moderation_time == null)
+    .filter((o) => o.repeat_approve_time != 0)
 
   let open = false;
   let selected = "";

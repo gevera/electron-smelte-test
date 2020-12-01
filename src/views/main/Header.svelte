@@ -6,6 +6,8 @@
 
   export let user;
 
+  let newNotification = false;
+
   const openAccountSettings = () => {
     if (user.user.groups == 2 || user.user.groups == 3) {
       $activeHeader = "Настройка аккаунта";
@@ -25,7 +27,7 @@
     <h5 class="text-dark-500">{$activeHeader}</h5>
   </div>
   <div class="flex justify-end">
-    <Button text flat color="dark" icon="notifications" />
+    <Button text flat color={newNotification ? "primary" : "dark"} icon="notifications" class={newNotification ? 'animate-pulse' : ''}/>
     <Button
       text
       flat
@@ -45,6 +47,7 @@
         </p>
       </div>
       <img
+        on:dblclick={() => newNotification = !newNotification}
         class="rounded-full border-2 border-primary-500 h-16 w-16"
         src="./images/avatar.jpeg"
         alt="avatar"/>
