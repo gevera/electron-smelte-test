@@ -71,7 +71,7 @@
     </div>
   </div>
   {:else}
-  <div class="flex px-6 items-center">
+  <!-- <div class="flex px-6 items-center">
     <p class="text-dark-500 mr-2">Город</p>
     <Select
       bind:value={city}
@@ -79,7 +79,7 @@
       autocomplete
       label="Город"
       items={itemsCity} />
-  </div>
+  </div> -->
   <ul>
     {#each data as item, i (item.id)}
       <li
@@ -94,7 +94,7 @@
           {item.city}
           {item.customer_address}
         </div>
-        <div class="w-1/12 px-6 flex justify-start">
+        <div class="w-1/12 px-2 flex justify-start">
           <Submenu id={item.id} {itemsData}/>
         </div>
       </li>

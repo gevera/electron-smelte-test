@@ -57,12 +57,6 @@
   };
 </script>
 
-<style>
-  .big {
-    font-size: 48px;
-  }
-</style>
-
 <div class="py-6 h-full">
   {#if data.length == 0}
     <NoData icon="find_in_page" text="Выполненных заявок пока нет" />
@@ -76,11 +70,13 @@
         label="Сортировка"
         items={itemsSort} />
     </div>
-    <TextField
+    <div class="px-6">
+      <TextField
       label="Поиск заявки"
       outlined
       color="secondary"
       bind:value={filterash} />
+    </div>
 
     <ul>
       {#each data as item, i (item.id)}
@@ -96,7 +92,7 @@
             {item.city}
             {item.customer_address}
           </div>
-          <div class="w-2/12 px-6 flex justify-start">
+          <div class="w-2/12 px-2 flex justify-start">
             <Button
               text
               light

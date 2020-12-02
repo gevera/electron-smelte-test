@@ -4,19 +4,21 @@
   import Heading from "../../components/common/Heading.svelte";
   import Person from "../../components/common/Person.svelte";
   import SaveClose from "../../components/common/SaveClose.svelte";
-  import { orderID } from "../../utils/stores/order";
+  import { customer, orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
+  import { executorID } from "../../utils/stores/order";
   import { tempConfig } from "../../utils/stores/tempConfigs";
-import Notifier from "../../components/common/Notifier.svelte";
+  import Notifier from "../../components/common/Notifier.svelte";
+  import { onMount } from "svelte";
 
   // TODO fix status not changing
-  // get data of customer & get data of executor
-  
+
   let confirmStop = false,
     rejectReason = "",
     showReject = true,
     showSuccess = false,
-    showFailure = false;
+    showFailure = false,
+    exec = {};
   const sendReject = async () => {
     const response = await fetch(
       `${$tempConfig.server_URL}${$tempConfig.orderDecline}${$orderID}/`,
@@ -38,6 +40,42 @@ import Notifier from "../../components/common/Notifier.svelte";
       showFailure = true;
     }
   };
+
+  const acceptReview = async () => {
+    const response = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.orderAccept}${$orderID}/`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `token ${$token}`,
+        },
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Prinyat", data);
+    }
+  };
+  const getExecutor = async (id) => {
+    const response = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.executor}${id}/`,
+      {
+        headers: {
+          Authorization: `token ${$token}`,
+        },
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      exec = data;
+      console.log("Executor ===>>> ", data);
+    }
+  };
+
+  onMount(async () => {
+    await getExecutor($executorID);
+  });
 </script>
 
 <div class="h-full w-full py-6 flex flex-col justify-between">
@@ -58,11 +96,11 @@ import Notifier from "../../components/common/Notifier.svelte";
     <div class="flex px-6 justify-around">
       <div class="flex-grow mr-4">
         <Heading heading="Заказчик" />
-        <Person />
+        <Person customer={$customer} />
       </div>
       <div class="flex-grow ml-4">
         <Heading heading="Исполнитель" />
-        <Person />
+        <Person rp={exec} />
       </div>
     </div>
     <Heading heading="Данные" addClass="my-2 mx-4" />
@@ -93,7 +131,7 @@ import Notifier from "../../components/common/Notifier.svelte";
     </div>
   </div>
   <!-- Fix to 'Prinyati' add function to accept review PUT empty body -->
-  <SaveClose wordPositive="Принять"/>
+  <SaveClose wordPositive="Принять" positive={acceptReview} />
 </div>
 
 <Dialog bind:value={confirmStop}>
@@ -113,4 +151,7 @@ import Notifier from "../../components/common/Notifier.svelte";
   </div>
 </Dialog>
 
-<Notifier {showSuccess} {showFailure} textSuccess="Отчет был успешно отклонен"/>
+<Notifier
+  {showSuccess}
+  {showFailure}
+  textSuccess="Отчет был успешно отклонен" />

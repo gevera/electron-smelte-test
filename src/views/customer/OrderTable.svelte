@@ -5,6 +5,8 @@
   import { token } from "../../utils/stores/token";
   import Table from "../../components/common/Table.svelte";
   import Submenu from "../../components/common/Submenu.svelte";
+  
+ // Show icon when no data
 
   let dataFetched = [];
   let loading = false;
@@ -63,7 +65,7 @@
           {item.city}
           {item.customer_address}
         </div>
-        <div class="w-2/12 px-6 flex justify-start">
+        <div class="w-2/12 px-2 flex justify-start">
            <Submenu id={item.id}/>
         </div>
       </li>

@@ -61,12 +61,13 @@
             {item.city}
             {item.customer_address}
           </div>
-          <div class="w-1/12 px-6 flex justify-start">
+          <div class="w-1/12 px-2 flex justify-start">
             <!-- <Submenu id={item.id} icon="visibility"/> -->
             <Button
               text
               color="dark"
               icon="visibility"
+              class="p-0"
               on:click={() => {
                 $activeHeader = 'Просмотр заявки';
                 $orderID = item.id;

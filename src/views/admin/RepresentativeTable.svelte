@@ -63,8 +63,8 @@
 
   const toggleMenu = () => (open = !open);
 
-  $: console.log(data);
-  $: console.log(selected);
+  // $: console.log(data);
+  // $: console.log(selected);
 </script>
 
 <div class="py-6">
@@ -85,7 +85,7 @@
         </div>
         <div class="w-2/12 border-r pl-4 text-dark-500">{rp.user.phone}</div>
         <div class="w-5/12 border-r pl-4 text-dark-500">{rp.user.region}</div>
-        <div class="w-2/12 px-6 flex justify-start">
+        <div class="w-2/12 px-2 flex justify-start">
         <Submenu id={rp.user.pk} {itemsData}/>
         </div>
       </li>

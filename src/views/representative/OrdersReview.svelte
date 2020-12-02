@@ -5,7 +5,7 @@
   import { token } from "../../utils/stores/token";
   import Table from "../../components/common/Table.svelte";
   import Submenu from "../../components/common/Submenu.svelte";
-  import { orderID } from "../../utils/stores/order";
+  import { orderID, executorID } from "../../utils/stores/order";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import NoData from "../../components/common/NoData.svelte";
 
@@ -26,6 +26,7 @@
     if (res.ok) {
       const body = await res.json();
       dataFetched = body;
+      $executorID = dataFetched[0].executor;
       console.log(dataFetched);
       loading = false;
     }
@@ -49,8 +50,8 @@
     $activeHeader = "Проверка отчета по заявке";
   };
 
-  $: console.table(data);
-  $: console.log(selected);
+  // $: console.table(data);
+  // $: console.log(selected);
 </script>
 
 <div class="py-6 h-full">
@@ -71,7 +72,7 @@
             {item.city}
             {item.customer_address}
           </div>
-          <div class="w-2/12 px-6 flex justify-start">
+          <div class="w-2/12 px-2 flex justify-start">
             <Button
               text
               light

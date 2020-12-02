@@ -4,8 +4,6 @@
   import { token } from "../../utils/stores/token";
   import { regions, cities } from "../../utils/stores/regions";
 import Notifier from "../../components/common/Notifier.svelte";
-  // TODO figure out order_type
-  // 1 = platnaya 2 = besplatnaya
   let customer_number = "",
     customer_address = "",
     customer = "",

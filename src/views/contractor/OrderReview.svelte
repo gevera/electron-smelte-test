@@ -5,8 +5,21 @@
   import UpdateReport from "../../components/common/UpdateReport.svelte";
   import Notifier from "../../components/common/Notifier.svelte";
 
-  let showSuccess = false,
-    showFailure = false;
+  let 
+    showSuccess = false,
+    showFailure = false,
+    replaceFoto = false,
+    replaceScan= false;
+
+    let imageF,
+    imageS,
+    fotka,
+    scan,
+    readerF,
+    readerS,
+    fotoInput,
+    scanInput;
+
 
   const gotoAddReport = () => {
     $activeHeader = "Новый отчет";

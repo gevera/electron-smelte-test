@@ -2,6 +2,7 @@
   import Heading from "../../components/common/Heading.svelte";
   import SaveClose from "../../components/common/SaveClose.svelte";
   import { TextField, Button } from "smelte";
+  // TODO Add switch foto
 </script>
 
 <div class="h-full w-full flex flex-col justify-between py-6">

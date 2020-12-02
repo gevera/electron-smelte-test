@@ -26,7 +26,7 @@
     showSuccess = false,
     showFailure = false;
 
-  const URL = `${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`;
+  const URL = `${$tempConfig.server_URL}${$tempConfig.orderList}${$orderID}/`;
 
   const fetchOrder = async () => {
     const response = await fetch(URL, {
@@ -64,7 +64,7 @@
     };
   });
   const saveEdit = async () => {
-    const response = await fetch(URL, {
+    const response = await fetch(`${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

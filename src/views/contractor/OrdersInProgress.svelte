@@ -73,7 +73,7 @@
             {item.city}
             {item.customer_address}
           </div>
-          <div class="w-1/12 px-6 flex justify-start">
+          <div class="w-1/12 px-2 flex justify-start">
             <!-- <Submenu id={item.id} icon="visibility"/> -->
             <Button
               text

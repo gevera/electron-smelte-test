@@ -94,7 +94,7 @@
           {item.city}
           {item.customer_address}
         </div> -->
-        <div class="w-1/12 border-l px-6 flex justify-start">
+        <div class="w-1/12 border-l px-2 flex justify-start">
           <Submenu id={item.id} {itemsData} />
         </div>
       </li>

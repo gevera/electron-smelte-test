@@ -6,7 +6,9 @@
   import { regions, cities } from "../../utils/stores/regions";
 
   let city = '',
-      region = '';
+      region = '',
+      st = "",
+      status = "Ищет исполнителя";
 
   const URL = `${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`;
   const fetchOrder = async () => {
@@ -16,10 +18,18 @@
       },
     });
     const data = await response.json();
+    st = data.st;
     city = $cities.filter(c => c.id == data.city)[0].name;
     region = $regions.filter(c => c.id == data.region)[0].name;
     return data;
   };
+  $: if(st == 2) {
+    status = "В работе"
+  } else if (st == 3) {
+    status = "Ожидает проверки"
+  } else if (st == 4) {
+    status = "Исполненно"
+  }
 </script>
 
 <style>
@@ -31,7 +41,7 @@
   {:then data}
     <div class="flex items-center justify-between p-6">
       <h5 class="text-dark-500"># {data.pk}</h5>
-      <h5 class="text-primary-500">На модерации</h5>
+    <h5 class="text-primary-500">{status}</h5>
     </div>
     <div class="">
       <table class="table-fixed w-full">

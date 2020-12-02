@@ -1,15 +1,13 @@
 <script>
   // TODO
   
-  // 1. Вывод ошибок валидации (хотя бы под формой) и что сервер отвечает, если ошибка (где это возможно реализовать)
-  // 2. Маски для input (phone, email)
+  // 2. Маски для input (phone)
   // 3. В сайдбаре после редиректа активный элемент не меняется (не так важно, но в финале нужно будет)
-  // 4. Удаление картинки, кнопка всплывает при наведении / Add delete icon/button on hover when photo is added
-  // 5. Элемент Уведомления нужно сделать (откуда брать и как работать с API подскажу, в Figma я оставил комментарий)
-  // 7. Decline/Accept Review from RP -> Prinyeati/Okloniti
-  // 8. Get RP in EditAccount of Contractor
-  // 9. Fix Tables
-  // 10. Fix Photo Upload and Download
+  // BI 5. Элемент Уведомления нужно сделать (откуда брать и как работать с API подскажу, в Figma я оставил комментарий) 
+  // 7. Accept Review from RP -> Prinyeati/Okloniti
+  // BI 8. Get RP in EditAccount of Contractor
+  // BI 10. Fix Photo Upload and Download
+  // Fix Prosmotr Ispolnitelya in Admin
 
   import "smelte/src/tailwind.css";
   import Canvas from "./components/common/Canvas.svelte";

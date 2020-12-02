@@ -1,5 +1,4 @@
 <script>
-  //TODO Check why server responds with ok but the list of rps is not updated
   import Heading from "../../components/common/Heading.svelte";
   import { Button, TextField, Select, Snackbar } from "smelte";
   import { regions } from "../../utils/stores/regions";
@@ -7,6 +6,8 @@
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import Notifier from "../../components/common/Notifier.svelte";
+  import { fade } from "svelte/transition";
+
   let region = "",
     phone = "",
     email = "",
@@ -18,7 +19,10 @@
     when_issued = "",
     password = "",
     showSuccess = false,
-    showFailure = false;
+    showFailure = false,
+    replaceFoto = false,
+    replacePassport = false,
+    replaceRegistration = false;
 
   let imageF,
     imageP,
@@ -132,7 +136,22 @@
     }
   };
 
-  $: console.log(`REGION ===>>> ${region}`);
+  // $: console.log(`REGION ===>>> ${region}`);
+  const showRemoveLogicF = () => {
+    if (fotka) {
+      replaceFoto = true;
+    }
+  };
+  const showRemoveLogicR = () => {
+    if (registration) {
+      replaceRegistration = true;
+    }
+  };
+  const showRemoveLogicP = () => {
+    if (passport) {
+      replacePassport = true;
+    }
+  };
 </script>
 
 <form
@@ -142,15 +161,30 @@
     <Heading heading="Фото" addClass="mb-2" />
     <div class="flex h-48 px-6 items-center mb-4">
       <div
-        class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
+        class="w-48 h-48 mr-6 grid place-items-center p-2 bg-cover bg-center rounded-md cursor-pointer"
+        on:mouseover={showRemoveLogicF}
+        on:mouseleave={() => (replaceFoto = false)}
         id="fot">
-        <Button
-          class=""
-          on:click={() => {
-            fotoInput.click();
-          }}>
-          Загрузить фото
-        </Button>
+        {#if !fotka}
+          <Button
+            class=""
+            on:click={() => {
+              fotoInput.click();
+            }}>
+            Загрузить фото
+          </Button>
+        {/if}
+        {#if replaceFoto}
+          <div transition:fade>
+            <Button
+              class=""
+              on:click={() => {
+                fotoInput.click();
+              }}>
+              Заменить фото
+            </Button>
+          </div>
+        {/if}
         <input
           style="display:none"
           type="file"
@@ -160,15 +194,30 @@
         <!-- {#if fotka}<img class="object-contain" src={fotka} alt="fotka" />{/if} -->
       </div>
       <div
-        class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
+        class="w-48 h-48 mr-6 grid place-items-center p-2 bg-cover bg-center rounded-md cursor-pointer"
+        on:mouseover={showRemoveLogicR}
+        on:mouseleave={() => (replaceRegistration = false)}
         id="reg">
-        <Button
-          class=""
-          on:click={() => {
-            registrationInput.click();
-          }}>
-          Прописка
-        </Button>
+        {#if !registration}
+          <Button
+            class=""
+            on:click={() => {
+              registrationInput.click();
+            }}>
+            Прописка
+          </Button>
+        {/if}
+        {#if replaceRegistration}
+          <div transition:fade>
+            <Button
+              class=""
+              on:click={() => {
+                registrationInput.click();
+              }}>
+              Заменить фото
+            </Button>
+          </div>
+        {/if}
         <input
           style="display:none"
           type="file"
@@ -178,15 +227,30 @@
         <!-- {#if passport}<img class="object-contain" src={passport} alt="passport" />{/if} -->
       </div>
       <div
-        class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
+        class="w-48 h-48 mr-6 grid place-items-center p-2 bg-cover bg-center rounded-md cursor-pointer"
+        on:mouseover={showRemoveLogicP}
+        on:mouseleave={() => (replacePassport = false)}
         id="psprt">
-        <Button
-          class=""
-          on:click={() => {
-            passportInput.click();
-          }}>
-          Фото паспорта
-        </Button>
+        {#if !passport}
+          <Button
+            class=""
+            on:click={() => {
+              passportInput.click();
+            }}>
+            Фото паспорта
+          </Button>
+        {/if}
+        {#if replacePassport}
+          <div transition:fade>
+            <Button
+              class=""
+              on:click={() => {
+                passportInput.click();
+              }}>
+              Заменить фото
+            </Button>
+          </div>
+        {/if}
         <input
           style="display:none"
           type="file"

@@ -97,7 +97,7 @@
         </div>
         <div class="w-3/12 border-r pl-4 text-dark-500">{exec.user.phone}</div>
         <div class="w-5/12 border-r pl-4 text-dark-500">{exec.user.region}</div>
-        <div class="w-1/12 px-6 flex justify-start">
+        <div class="w-1/12 px-2 flex justify-start">
           <Button
             text
             light

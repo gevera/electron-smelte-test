@@ -4,13 +4,17 @@
   import { TextField, Dialog, Snackbar, Button } from "smelte";
   import Person from "../../components/common/Person.svelte";
   import { token } from "../../utils/stores/token";
+  import { rpID } from "../../utils/stores/order";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { getMe } from "../../utils/helpers/me";
   import { onMount } from "svelte";
   import { wallet, user } from "../../utils/stores/user";
 import Notifier from "../../components/common/Notifier.svelte";
+import { regions } from "../../utils/stores/regions";
 
-  let email = "",
+  let
+  reg = "",
+    email = "",
     phone = "",
     password = "",
     bik = "",
@@ -23,7 +27,8 @@ import Notifier from "../../components/common/Notifier.svelte";
 
   $: kosh = { ...$wallet };
 
-  //TODO Get Regional representative data
+  // TODO Get Regional representative data
+  // ISSUE user with this phone already exists
   
   const getWallet = async () => {
     const response = await fetch(
@@ -50,6 +55,7 @@ import Notifier from "../../components/common/Notifier.svelte";
     corr_account = walletData.corr_account;
     phone = data[0].user.phone;
     email = data[0].user.email;
+    reg = data[0].user.region;
   });
 
   const updateAccount = async () => {
@@ -97,13 +103,21 @@ import Notifier from "../../components/common/Notifier.svelte";
       showFailure = true;
     }
   };
+
+  $: region = ($regions.filter(r => r.id == reg)[0] || {} ).name;
+  $: console.log(region);
 </script>
 
 <div class="h-full w-full flex flex-col justify-between py-6">
   <div class="px-6">
-    <Heading heading="Региональный представитель" />
     <!-- If rp present -->
-    <Person />
+    <!-- <Heading heading="Региональный представитель" />
+    <Person id={$rpID}/>
+  -->
+   {#if region}
+    <Heading heading="Регион" />
+    <h5 class="text-primary-500 mb-4">{region}</h5>
+   {/if}
     <Heading heading="Общие данные" />
     <div class="mt-4 flex">
       <div class="flex-grow mr-4">

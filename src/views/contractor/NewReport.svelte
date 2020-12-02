@@ -9,6 +9,8 @@
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { Snackbar } from "smelte";
 import Notifier from "../../components/common/Notifier.svelte";
+
+// TODO Add swicth foto buttons
   let fotka,
     imageF,
     imageS,

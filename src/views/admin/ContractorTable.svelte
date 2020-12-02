@@ -77,14 +77,14 @@
 <div class="w-full h-full py-6">
   <div class="flex items-center justify-end px-6 mb-6">
     <!-- <Button class="mr-6" on:click={gotoNewContractor}>Создать нового</Button> -->
-    <div class="flex items-center">
+    <!-- <div class="flex items-center">
       <p class="text-dark-500 mr-2">Статус</p>
       <Select
         class="w-auto  p-2 border-none"
         outlined
         {items}
         bind:value={selectedActive} />
-    </div>
+    </div> -->
   </div>
   <div class="mt-4">
     {#each data as exec, i (exec.user.pk)}
@@ -97,7 +97,7 @@
         </div>
         <div class="w-3/12 border-r pl-4 text-dark-500">{exec.user.phone}</div>
         <div class="w-5/12 border-r pl-4 text-dark-500">{exec.user.region}</div>
-        <div class="w-1/12 px-6 flex justify-start">
+        <div class="w-1/12 px-2 flex justify-start">
           <Button
             text
             light

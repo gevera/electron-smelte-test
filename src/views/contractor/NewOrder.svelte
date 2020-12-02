@@ -5,6 +5,8 @@
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import Notifier from "../../components/common/Notifier.svelte";
 
+  // TODO No new order being created with certain combination of region and city
+
   let customer_number = "",
     customer_address = "",
     customer = "",

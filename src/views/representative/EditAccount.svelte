@@ -9,6 +9,8 @@
   import { onMount } from "svelte";
 import Notifier from "../../components/common/Notifier.svelte";
 
+// Issue Phone with this user already exists
+
   let userUpdated = {
       phone: "",
       email: "",

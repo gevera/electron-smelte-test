@@ -27,7 +27,7 @@
     <h5 class="text-dark-500">{$activeHeader}</h5>
   </div>
   <div class="flex justify-end">
-    <Button text flat color={newNotification ? "primary" : "dark"} icon="notifications" class={newNotification ? 'animate-pulse' : ''}/>
+    <Button text flat color={newNotification ? "primary" : "dark"} icon={newNotification ? "notifications_active" : "notifications"} class={newNotification ? 'animate-ping' : ''}/>
     <Button
       text
       flat
@@ -49,7 +49,7 @@
       <img
         on:dblclick={() => newNotification = !newNotification}
         class="rounded-full border-2 border-primary-500 h-16 w-16"
-        src="./images/avatar.jpeg"
+        src={user.user.face_photo}
         alt="avatar"/>
     </div>
   </div>

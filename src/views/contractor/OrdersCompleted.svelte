@@ -1,8 +1,10 @@
 <script>
-  import { Select } from "smelte";
+  import { Select, Button } from "smelte";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { cities } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
+  import { activeHeader } from "../../utils/stores/activeHeader";
+  import { orderID } from "../../utils/stores/order";
   import Submenu from "../../components/common/Submenu.svelte";
 
   let dataFetched = [];
@@ -68,8 +70,16 @@
           {item.city}
           {item.customer_address}
         </div>
-        <div class="w-2/12 px-6 flex justify-start">
-          <Submenu id={item.id} />
+        <div class="w-2/12 px-2 flex justify-start">
+          <!-- <Submenu id={item.id} /> -->
+          <Button
+          text
+          color="dark"
+          icon="visibility"
+          on:click={() => {
+            $activeHeader = 'Просмотр заявки';
+            $orderID = item.id;
+          }} />
         </div>
       </li>
     {/each}
