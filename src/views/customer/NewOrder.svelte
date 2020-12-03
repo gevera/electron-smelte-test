@@ -2,7 +2,6 @@
   import { TextField, Button, Select, Snackbar } from "smelte";
   import { regions, cities } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
-  import { user } from "../../utils/stores/user";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import Notifier from "../../components/common/Notifier.svelte";
 

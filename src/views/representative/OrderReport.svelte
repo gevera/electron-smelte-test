@@ -18,7 +18,8 @@
     showReject = true,
     showSuccess = false,
     showFailure = false,
-    exec = {};
+    exec = {},
+    report = {};
   const sendReject = async () => {
     const response = await fetch(
       `${$tempConfig.server_URL}${$tempConfig.orderDecline}${$orderID}/`,
@@ -73,6 +74,23 @@
     }
   };
 
+  const getReport = async () => {
+    const response = await fetch(
+      `${$tempConfig.server_URL}${$tempConfig.orderReviews}?order=${$orderID}`,
+      {
+        headers: {
+          Authorization: `token ${$token}`,
+        },
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      report = data[0];
+      console.log("Report ===>>> ", data[0]);
+      return report;
+    }
+  };
+
   onMount(async () => {
     await getExecutor($executorID);
   });
@@ -117,18 +135,17 @@
         Редактировать
       </Button>
     </div>
-    <div class="flex px-6 justify-between">
-      <img
-        src="./images/avatar.jpeg"
-        alt="photo_report"
-        class="w-32 h-32 mr-4" />
-      <p class="flex-grow">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi esse
-        perferendis laudantium quos, nobis ex rerum at laborum est provident
-        voluptates fuga dolorum! Exercitationem, aliquid incidunt laudantium
-        reprehenderit odit deserunt.
-      </p>
-    </div>
+    {#await getReport() then report}
+      <div class="flex px-6 justify-between">
+        {#each report.images as { images }}
+          <img src={images} alt="photo_report" class="w-32 h-32 mr-4" />
+        {/each}
+        {#each report.scans as { scans }}
+          <img src={scans} alt="scans" class="w-32 h-32 mr-4" />
+        {/each}
+      </div>
+      <p class="px-6">{report.description}</p>
+    {/await}
   </div>
   <!-- Fix to 'Prinyati' add function to accept review PUT empty body -->
   <SaveClose wordPositive="Принять" positive={acceptReview} />

@@ -1,47 +1,23 @@
 <script>
-  import { ProgressCircular } from "smelte";
-  import { tempConfig } from "../../utils/stores/tempConfigs";
   import { token } from "../../utils/stores/token";
   import { orderID } from "../../utils/stores/order";
-  import { regions, cities } from "../../utils/stores/regions";
-
-  let city = '',
-      region = '',
-      st = "",
-      status = "Ищет исполнителя";
-
-  const URL = `${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`;
-  const fetchOrder = async () => {
-    const response = await fetch(URL, {
-      headers: {
-        "Authorization": `token ${$token}`,
-      },
-    });
-    const data = await response.json();
-    st = data.st;
-    city = $cities.filter(c => c.id == data.city)[0].name;
-    region = $regions.filter(c => c.id == data.region)[0].name;
-    return data;
-  };
-  $: if(st == 2) {
-    status = "В работе"
-  } else if (st == 3) {
-    status = "Ожидает проверки"
-  } else if (st == 4) {
-    status = "Исполненно"
-  }
+  import { cities, regions } from "../../utils/stores/regions";
+  import { getOrderStatus, getName } from "../../utils/helpers/transformers";
+  import { fetchOrder } from "../../utils/helpers/fetchers";
+  import NoData from '../../components/common/NoData.svelte';
+  import Loading from '../../components/common/Loading.svelte';
 </script>
 
 <style>
 </style>
 
 <div class="">
-  {#await fetchOrder()}
-    <ProgressCircular />
+  {#await fetchOrder($orderID, $token)}
+    <Loading />
   {:then data}
     <div class="flex items-center justify-between p-6">
       <h5 class="text-dark-500"># {data.pk}</h5>
-    <h5 class="text-primary-500">{status}</h5>
+      <h5 class="text-primary-500">{getOrderStatus(data.status)}</h5>
     </div>
     <div class="">
       <table class="table-fixed w-full">
@@ -54,22 +30,26 @@
           </tr>
           <tr>
             <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Телефон</th>
-            <td class="w-1/2 px-6 py-4  text-dark-500">{data.customer_number}</td>
+            <td class="w-1/2 px-6 py-4  text-dark-500">
+              {data.customer_number}
+            </td>
           </tr>
           <tr class="bg-gray-100">
             <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Адрес</th>
             <td class="w-1/2 px-6 py-4  text-dark-500">
-              г. {city}, {data.customer_address}
+              г.
+              {getName($cities, data.city)},
+              {data.customer_address}
             </td>
           </tr>
           <tr>
             <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Регион</th>
-            <td class="w-1/2 px-6 py-4  text-dark-500">
-              {region}
-            </td>
+            <td class="w-1/2 px-6 py-4  text-dark-500">{getName($regions, data.region)}</td>
           </tr>
         </tbody>
       </table>
     </div>
+    {:catch}
+    <NoData />
   {/await}
 </div>

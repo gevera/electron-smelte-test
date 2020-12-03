@@ -6,6 +6,7 @@
   import OrdersReview from "../representative/OrdersReview.svelte";
   import OrderReport from "../representative/OrderReport.svelte";
   import EditReport from "../representative/EditReport.svelte";
+  import NewReport from "../representative/NewReport.svelte";
   import OrdersInProgress from "../representative/OrdersInProgress.svelte";
   import SingleReview from "../representative/SingleReview.svelte";
   import TakeOrder from "../representative/TakeOrder.svelte";
@@ -16,6 +17,8 @@
 
 {#if $activeHeader == 'Новая заявка'}
   <NewOrder />
+{:else if $activeHeader == 'Новый отчет'}
+  <NewReport />
 {:else if $activeHeader == 'Проверка заявок'}
   <OrdersReview />
 {:else if $activeHeader == 'Просмотр заявки'}

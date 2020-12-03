@@ -7,9 +7,11 @@
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { regions, cities } from "../../utils/stores/regions";
   import { getCities } from "../../utils/helpers/region";
+  import { fetchRegion } from "../../utils/helpers/fetchers";
   import Heading from "../../components/common/Heading.svelte";
   import Person from "../../components/common/Person.svelte";
-  import { onMount } from "svelte";
+  import Loading from "../../components/common/Loading.svelte";
+  import NoData from "../../components/common/NoData.svelte";
 
   let newCityName = "",
     showConfirm = false,
@@ -110,8 +112,8 @@
   $: citiFiltered = $cities.filter((c) => c.region == $orderID);
 </script>
 
-{#await getRegion()}
-  <h4>Loading...</h4>
+{#await fetchRegion($orderID, $token)}
+  <Loading />
 {:then data}
   <div class="w-full h-full py-6 flex flex-col justify-between">
     <div>
@@ -317,6 +319,8 @@
       </Button>
     </div>
   </div>
+{:catch}
+  <NoData />
 {/await}
 
 <Dialog bind:value={showConfirm}>

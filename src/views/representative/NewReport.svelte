@@ -7,12 +7,10 @@
   import { orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
   import { activeHeader } from "../../utils/stores/activeHeader";
-  import { fade } from "svelte/transition";
-
   import { Snackbar } from "smelte";
-  import Notifier from "../../components/common/Notifier.svelte";
+import Notifier from "../../components/common/Notifier.svelte";
 
-  // TODO Add swicth foto buttons
+// TODO Add swicth foto buttons
   let fotka,
     imageF,
     imageS,
@@ -23,9 +21,7 @@
     readerS,
     scanInput;
   let showFailure = false,
-    showSuccess = false,
-    replaceFoto = false,
-    replaceScan = false;
+    showSuccess = false;
   let text = "";
   const onFotoSelected = (e) => {
     imageF = e.target.files[0];
@@ -53,18 +49,6 @@
     };
   };
 
-  const showRemoveLogicF = () => {
-    if (fotka) {
-      replaceFoto = true;
-    }
-  };
-
-  const showRemoveLogicS = () => {
-    if (scan) {
-      replaceScan = true;
-    }
-  };
-
   const sendReport = async () => {
     const form = new FormData();
     form.append("images", imageF);
@@ -81,7 +65,7 @@
         body: form,
       }
     );
-    if (response.ok) {
+    if(response.ok) {
       showSuccess = true;
       $activeHeader = "Заявки на модерации";
     } else {
@@ -99,30 +83,15 @@
   <Heading heading="Фото" addClass="my-4 px-6" />
   <div class="flex h-48 px-6 items-center">
     <div
-      class="w-48 h-48 mr-6 grid place-items-center p-2 bg-cover bg-center rounded-md cursor-pointer"
-      on:mouseover={showRemoveLogicF}
-      on:mouseleave={() => (replaceFoto = false)}
+      class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
       id="fot">
-      {#if !fotka}
-        <Button
-          class=""
-          on:click={() => {
-            fotoInput.click();
-          }}>
-          Загрузить фото
-        </Button>
-      {/if}
-      {#if replaceFoto}
-        <div transition:fade>
-          <Button
-            class=""
-            on:click={() => {
-              fotoInput.click();
-            }}>
-            Заменить фото
-          </Button>
-        </div>
-      {/if}
+      <Button
+        class=""
+        on:click={() => {
+          fotoInput.click();
+        }}>
+        Загрузить фото
+      </Button>
       <input
         style="display:none"
         type="file"
@@ -132,30 +101,15 @@
       <!-- {#if fotka}<img class="object-contain" src={fotka} alt="fotka" />{/if} -->
     </div>
     <div
-      class="w-48 h-48 mr-6 grid place-items-center p-2 bg-cover bg-center rounded-md cursor-pointer"
-      on:mouseover={showRemoveLogicS}
-      on:mouseleave={() => (replaceScan = false)}
+      class="h-full mr-6 grid place-items-center p-2 bg-cover bg-center"
       id="scn">
-      {#if !scan}
-        <Button
-          class=""
-          on:click={() => {
-            scanInput.click();
-          }}>
-          Скан документа
-        </Button>
-      {/if}
-      {#if replaceScan}
-        <div transition:fade>
-          <Button
-            class=""
-            on:click={() => {
-              scanInput.click();
-            }}>
-            Заменить фото
-          </Button>
-        </div>
-      {/if}
+      <Button
+        class=""
+        on:click={() => {
+          scanInput.click();
+        }}>
+        Скан документа
+      </Button>
       <input
         style="display:none"
         type="file"

@@ -62,6 +62,7 @@
   };
 </script>
 
+
 <Heading heading="Фото" addClass="my-4 px-6" />
 <div class="flex h-48 px-6 items-center">
   <div

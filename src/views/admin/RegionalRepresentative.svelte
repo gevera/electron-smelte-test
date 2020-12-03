@@ -5,9 +5,14 @@
   import { token } from "../../utils/stores/token";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { sidemenu } from "../../utils/stores/sidemenu";
+  import { fetchAllRPs, fetchRP } from "../../utils/helpers/fetchers";
   import { activeHeader } from "../../utils/stores/activeHeader";
   import { onMount } from "svelte";
   import Notifier from "../../components/common/Notifier.svelte";
+  import Loading from "../../components/common/Loading.svelte";
+  import NoData from "../../components/common/NoData.svelte";
+import { getName } from "../../utils/helpers/transformers";
+import { regions } from "../../utils/stores/regions";
 
   let showConfirm = false,
     rpID = "",
@@ -17,21 +22,6 @@
     showSuccess = false,
     showFailure = false;
 
-  const getRp = async () => {
-    const response = await fetch(
-      `${$tempConfig.server_URL}${$tempConfig.rp}${$orderID}/`,
-      {
-        headers: {
-          Authorization: `token ${$token}`,
-        },
-      }
-    );
-    const data = await response.json();
-    represent = { ...data };
-    console.log(data);
-    rpID = data.user.pk;
-    return data;
-  };
 
   const gotoContractors = () => {
     $sidemenu = [...$sidemenu].map((s) =>
@@ -49,17 +39,9 @@
     $activeHeader = "Таблица исполнителей";
   };
 
-  const getAllRps = async () => {
-    const response = await fetch(`${$tempConfig.server_URL}${$tempConfig.rp}`, {
-      headers: {
-        Authorization: `token ${$token}`,
-      },
-    });
-    allRps = await response.json();
-  };
 
   onMount(async () => {
-    await getAllRps();
+    allRps = await fetchAllRPs($token);
   });
 
   $: rpList = allRps
@@ -67,6 +49,12 @@
     .map((i) => ({ value: i.user.pk, text: `${i.first_name} ${i.last_name}` }));
 
   $: console.log(rpList);
+
+  const triggerDialog = (rp) => {
+    rpID = rp.user.pk;
+    represent = {...rp};
+    showConfirm = true;
+  }
 
   const blockRp = async () => {
     const response = await fetch(
@@ -89,10 +77,8 @@
 </script>
 
 <div class="w-full h-full p-6">
-  {#await getRp()}
-    <div class="h-full grid place-items-center">
-      <h5>Loading...</h5>
-    </div>
+  {#await fetchRP($orderID, $token)}
+    <Loading />
   {:then rp}
     <div>
       <div class="flex items-center justify-between mb-2">
@@ -102,7 +88,8 @@
           icon="block"
           add="text-dark-500"
           iconClass="mr-2"
-          on:click={() => (showConfirm = true)}>
+          disabled={rpList.length}
+          on:click={triggerDialog(rp)}>
           Заблокировать
         </Button>
       </div>
@@ -130,12 +117,14 @@
 
             <tr class="bg-gray-100">
               <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Регион</th>
-              <td class="w-1/2 px-6 py-4  text-dark-500">{rp.user.region}</td>
+              <td class="w-1/2 px-6 py-4  text-dark-500">{getName($regions, rp.user.region)}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+  {:catch}
+    <NoData />
   {/await}
 </div>
 

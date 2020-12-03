@@ -1,30 +1,17 @@
 <script>
   import Heading from "../../components/common/Heading.svelte";
+  import NoData from "../../components/common/NoData.svelte";
+  import Loading from "../../components/common/Loading.svelte";
+  import { fetchExecutor } from "../../utils/helpers/fetchers";
+  import { getName } from "../../utils/helpers/transformers";
+  import { regions } from "../../utils/stores/regions";
   import { orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
-  import { tempConfig } from "../../utils/stores/tempConfigs";
-  import NoData from "../../components/common/NoData.svelte";
-  import { regions } from "../../utils/stores/regions";
-let rg = '';
-  const getExecutor = async () => {
-    const response = await fetch(`${$tempConfig.server_URL}${$tempConfig.executor}${$orderID}`,
-    {
-      headers: {
-        Authorization: `token ${$token}`,
-      },
-    });
-    const data = await response.json();
-    rg = data.user.region;
-    console.log(data);
-    return data;
-  };
-
-  $: region = ($regions.filter(r => r.id == rg)[0] || {}).name;
 </script>
 
 <div class="w-full h-full py-6">
-  {#await getExecutor()}
-    <NoData />
+  {#await fetchExecutor($orderID, $token)}
+    <Loading />
   {:then contr}
     <h5 class="text-dark-500 mb-2 px-6"># {contr.user.pk}</h5>
     <Heading heading="Фото" addClass="my-4 px-6" />
@@ -59,7 +46,9 @@ let rg = '';
           </tr>
           <tr>
             <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Регион</th>
-            <td class="w-1/2 px-6 py-4  text-dark-500">{region}</td>
+            <td class="w-1/2 px-6 py-4  text-dark-500">
+              {getName($regions, contr.user.region)}
+            </td>
           </tr>
           <tr class="bg-gray-100">
             <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Баланс</th>
@@ -78,5 +67,7 @@ let rg = '';
         </tbody>
       </table>
     </div>
+  {:catch}
+    <NoData />
   {/await}
 </div>

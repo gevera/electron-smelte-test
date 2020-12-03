@@ -1,13 +1,11 @@
 <script>
   // TODO
   
-  // 2. Маски для input (phone)
   // 3. В сайдбаре после редиректа активный элемент не меняется (не так важно, но в финале нужно будет)
   // BI 5. Элемент Уведомления нужно сделать (откуда брать и как работать с API подскажу, в Figma я оставил комментарий) 
   // 7. Accept Review from RP -> Prinyeati/Okloniti
   // BI 8. Get RP in EditAccount of Contractor
   // BI 10. Fix Photo Upload and Download
-  // Fix Prosmotr Ispolnitelya in Admin
 
   import "smelte/src/tailwind.css";
   import Canvas from "./components/common/Canvas.svelte";

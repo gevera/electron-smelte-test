@@ -1,4 +1,3 @@
-import { read } from 'fs';
 import { readable } from 'svelte/store';
 
 export const tempConfig = readable({
@@ -10,6 +9,7 @@ export const tempConfig = readable({
     rp: '/users/rp/',
     region: '/region/region/',
     city: '/region/city/',
+    notification: '/notification/',
     orderList: '/order/list/',
     orderCreate: '/order/create/',
     orderExecute: '/order/execute/',

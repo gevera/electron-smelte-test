@@ -2,7 +2,7 @@
   import { TextField, Select, Snackbar, ProgressCircular } from "smelte";
   import { tempConfig } from "../../utils/stores/tempConfigs";
   import { token } from "../../utils/stores/token";
-  import { user } from "../../utils/stores/user";
+  import {fetchOrder} from '../../utils/helpers/fetchers'
   import { orderID } from "../../utils/stores/order";
   import { regions, cities } from "../../utils/stores/regions";
   import { onMount } from "svelte";
@@ -20,28 +20,13 @@
     order_source: "",
   };
 
-  let orderFetched = {};
-
-  let pk = "",
+  let orderOriginal = {},
     showSuccess = false,
     showFailure = false;
 
-  const URL = `${$tempConfig.server_URL}${$tempConfig.orderList}${$orderID}/`;
-
-  const fetchOrder = async () => {
-    const response = await fetch(URL, {
-      headers: {
-        Authorization: `token ${$token}`,
-      },
-    });
-    orderFetched = await response.json();
-    console.log(orderFetched);
-    pk = orderFetched.pk;
-    return orderFetched;
-  };
-
+ 
   onMount(async () => {
-    const fetchedData = await fetchOrder();
+    orderOriginal = await fetchOrder($orderID, $token);
     const {
       customer,
       customer_number,
@@ -51,7 +36,7 @@
       created_by,
       order_type,
       order_source,
-    } = fetchedData;
+    } = orderOriginal;
     order = {
       customer,
       customer_number,
@@ -79,14 +64,15 @@
     }
   };
 
-  $: console.log(order);
+  $: pk = orderOriginal.pk;
   $: itemsRegion = [...$regions].map((r) => ({ value: r.id, text: r.name }));
   $: itemsCity = [...$cities].map((r) => ({ value: r.id, text: r.name }));
 </script>
 
 <div class="w-full h-full p-8 flex flex-col justify-between">
   <div class="">
-    <h5 class="text-dark-500 mb-6"># {pk}</h5>
+
+    <h5 class="text-dark-500 mb-6"># {pk ? pk : ''}</h5>
     <TextField
       label="Имя клиента"
       outlined

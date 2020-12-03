@@ -1,5 +1,5 @@
 <script>
-  import Heading from "../../components/common/Heading.svelte";
+    import Heading from "../../components/common/Heading.svelte";
   import { Button, TextField, Select, Snackbar } from "smelte";
   import { regions } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";

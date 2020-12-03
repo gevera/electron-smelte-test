@@ -3,6 +3,21 @@
   import SaveClose from "../../components/common/SaveClose.svelte";
   import { TextField, Button } from "smelte";
   // TODO Add switch foto
+  let region = "",
+    phone = "",
+    email = "",
+    first_name = "",
+    last_name = "",
+    second_name = "",
+    issued_by = "",
+    passport_data = "",
+    when_issued = "",
+    password = "",
+    showSuccess = false,
+    showFailure = false,
+    replaceFoto = false,
+    replacePassport = false,
+    replaceRegistration = false;
 </script>
 
 <div class="h-full w-full flex flex-col justify-between py-6">
