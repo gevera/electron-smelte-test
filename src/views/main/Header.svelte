@@ -52,8 +52,8 @@ let open = false,
     <h5 class="text-dark-500">{$activeHeader}</h5>
   </div>
   <div class="flex justify-end">
-    <Menu bind:open {items} bind:value={selected}>
-      <div slot="activator">
+    <!-- <Menu bind:open {items} bind:value={selected}>
+      <div slot="activator"> -->
         <Button
         on:click={() => open = !open}
         text
@@ -61,9 +61,9 @@ let open = false,
         color={newNotification ? 'primary' : 'dark'}
         icon={newNotification ? 'notifications_active' : 'notifications'}
         class={newNotification ? 'animate-pulse' : ''} />
-      </div>
+      <!-- </div>
       <slot>Hahahahah</slot>
-    </Menu>
+    </Menu> -->
     <Button
       text
       flat

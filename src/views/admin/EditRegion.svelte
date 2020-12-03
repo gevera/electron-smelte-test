@@ -46,6 +46,8 @@ import Notifier from "../../components/common/Notifier.svelte";
     const regionData = await getRegion();
     console.log(regionData);
     region = { ...regionData };
+    showFailure = false;
+    showSuccess = false;
   });
   const updateRegion = async () => {
     const response = await fetch(

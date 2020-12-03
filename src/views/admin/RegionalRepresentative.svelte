@@ -1,5 +1,5 @@
 <script>
-  import { Button, Dialog, Snackbar, Select } from "smelte";
+  import { Button, Dialog, TextField, Select } from "smelte";
   import Heading from "../../components/common/Heading.svelte";
   import { orderID } from "../../utils/stores/order";
   import { token } from "../../utils/stores/token";
@@ -11,17 +11,17 @@
   import Notifier from "../../components/common/Notifier.svelte";
   import Loading from "../../components/common/Loading.svelte";
   import NoData from "../../components/common/NoData.svelte";
-import { getName } from "../../utils/helpers/transformers";
-import { regions } from "../../utils/stores/regions";
+  import { getName } from "../../utils/helpers/transformers";
+  import { regions } from "../../utils/stores/regions";
 
   let showConfirm = false,
     rpID = "",
+    password = "",
     backupID = "",
     allRps = [],
     represent = {},
     showSuccess = false,
     showFailure = false;
-
 
   const gotoContractors = () => {
     $sidemenu = [...$sidemenu].map((s) =>
@@ -39,7 +39,6 @@ import { regions } from "../../utils/stores/regions";
     $activeHeader = "Таблица исполнителей";
   };
 
-
   onMount(async () => {
     allRps = await fetchAllRPs($token);
   });
@@ -52,13 +51,13 @@ import { regions } from "../../utils/stores/regions";
 
   const triggerDialog = (rp) => {
     rpID = rp.user.pk;
-    represent = {...rp};
+    represent = { ...rp };
     showConfirm = true;
-  }
+  };
 
   const blockRp = async () => {
     const response = await fetch(
-      `${$tempConfig.server_URL}${$tempConfig.rp}${$orderID}/`,
+      `${$tempConfig.server_URL}${$tempConfig.blockrp}${$orderID}/`,
       {
         method: "PUT",
         headers: {
@@ -70,6 +69,8 @@ import { regions } from "../../utils/stores/regions";
     );
     if (response.ok) {
       showSuccess = true;
+      password = "";
+      showConfirm = false;
     } else {
       showFailure = true;
     }
@@ -88,7 +89,7 @@ import { regions } from "../../utils/stores/regions";
           icon="block"
           add="text-dark-500"
           iconClass="mr-2"
-          disabled={rpList.length}
+          disabled={rpList.length == 0}
           on:click={triggerDialog(rp)}>
           Заблокировать
         </Button>
@@ -117,7 +118,9 @@ import { regions } from "../../utils/stores/regions";
 
             <tr class="bg-gray-100">
               <th class="w-1/2 px-6 py-4  text-dark-500 font-light">Регион</th>
-              <td class="w-1/2 px-6 py-4  text-dark-500">{getName($regions, rp.user.region)}</td>
+              <td class="w-1/2 px-6 py-4  text-dark-500">
+                {getName($regions, rp.user.region)}
+              </td>
             </tr>
           </tbody>
         </table>

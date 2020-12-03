@@ -8,7 +8,8 @@
   import { orderID } from "../../utils/stores/order";
   import { regions } from "../../utils/stores/regions";
   import { token } from "../../utils/stores/token";
-
+  
+  // TODO Cannot block RP
   export let itemsData = [
     {
       value: 1,
@@ -40,7 +41,7 @@
     </div>
   </div> -->
     <ul>
-      {#each data as rp, i (rp.user.pk)}
+      {#each data.filter(r => r.status == 1) as rp, i (rp.user.pk)}
         <li
           class="cursor-pointer p-2 flex hover:bg-primary-200 items-center list-none"
           class:bg-gray-100={i % 2}>
