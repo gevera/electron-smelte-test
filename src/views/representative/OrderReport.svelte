@@ -74,9 +74,9 @@
     }
   };
 
-  const getReport = async () => {
+  const getReport = async (id) => {
     const response = await fetch(
-      `${$tempConfig.server_URL}${$tempConfig.orderReviews}?order=${$orderID}`,
+      `${$tempConfig.server_URL}${$tempConfig.orderReviews}?order=${id}`,
       {
         headers: {
           Authorization: `token ${$token}`,
@@ -92,6 +92,8 @@
   };
 
   onMount(async () => {
+    console.log('OREDER REPORT')
+    await getReport($orderID);
     await getExecutor($executorID);
   });
 </script>
@@ -135,8 +137,8 @@
         Редактировать
       </Button>
     </div>
-    {#await getReport() then report}
-      <div class="flex px-6 justify-between">
+    {#await getReport($orderID) then report}
+      <div class="flex px-6 justify-start">
         {#each report.images as { images }}
           <img src={images} alt="photo_report" class="w-32 h-32 mr-4" />
         {/each}

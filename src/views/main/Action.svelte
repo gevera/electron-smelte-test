@@ -24,7 +24,9 @@
 </style>
 
 <main class="w-full h-full p-6 back flex flex-col justify-between">
-  <Header {user} />
+  <div class="top-0">
+    <Header {user} />
+  </div>
   <div class="rounded-md shadow-md bg-white flex-1 mt-6">
     {#if (user.user || {}).groups == 4}
       <CustomerSwitcher />

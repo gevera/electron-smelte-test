@@ -10,6 +10,6 @@ export const getOrderStatus = (s) => {
   }
 };
 
-export const getName = (arr, comp) => arr.filter((v) => v.id == comp)[0].name;
+export const getName = (arr, comp) => (arr.filter((v) => v.id == comp)[0] || {}).name;
 
 export const filteredData = (arr, s) => arr.filter((o) => o.status == s);

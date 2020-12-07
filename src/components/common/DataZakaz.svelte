@@ -8,9 +8,9 @@
   let city = "",
     region = "";
 
-  const URL = `${$tempConfig.server_URL}${$tempConfig.orderCreate}${$orderID}/`;
-  const fetchOrder = async () => {
-    const response = await fetch(URL, {
+
+  const fetchOrder = async (id) => {
+    const response = await fetch(`${$tempConfig.server_URL}${$tempConfig.orderCreate}${id}`, {
       headers: {
         Authorization: `token ${$token}`,
       },
@@ -25,7 +25,7 @@
   };
 </script>
 
-{#await fetchOrder()}
+{#await fetchOrder($orderID)}
     <div class="w-full h-full grid place-items-center">
       <ProgressCircular />
     </div>
